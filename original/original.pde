@@ -1,6 +1,10 @@
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
+import java.lang.Long;
+
 
 String[] phrases; //contains all of the phrases
 int totalTrialNum = 2; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
@@ -33,6 +37,9 @@ void setup()
   size(1280, 720); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   textFont(createFont("Arial", 24)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   noStroke(); //my code doesn't use any strokes
+  
+  //====== AUTOCOMPLETE CODE =====
+  wordFreqBase = readWordFreqSource();
 }
 
 //You can modify anything in here. This is just a basic implementation.
@@ -126,6 +133,7 @@ void mousePressed()
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
   {
+    System.out.println(autoComplete(currentTyped));
     nextTrial(); //if so, advance to next trial
   }
 }
@@ -204,8 +212,49 @@ void drawWatch()
   popMatrix();
 }
 
+//========AUTOCOMPLETE CODE===========
+/* 
+   Usage: autoComplete(String prefix) returns an ArrayList of WordFreq (sorted by frequency)
+   where each WordFreq is a tuple of word (String) and freq (Long) 
+*/
+String wordFreqSourceFile = "ngrams/count_1w.txt";
+List<WordFreq> wordFreqBase;
+  
+class WordFreq {
+  public final String word;
+  public final long freq;
+  public WordFreq(String word, long freq) {
+    this.word = word;
+    this.freq = freq;
+  }
+  
+  public String toString() {
+    return String.format("(%s, %d)", word, freq);
+  }
+}
 
+List<WordFreq> readWordFreqSource() {
+  List<WordFreq> wordFreq = new ArrayList<WordFreq>();
+  String[] lines = loadStrings(wordFreqSourceFile);
+  for (int i = 0 ; i < lines.length; i++) {
+    String[] pieces = split(lines[i], TAB);
+    wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
+  }
+  return wordFreq;  
+}
 
+List<WordFreq> autoComplete(String prefix) {
+  if (wordFreqBase == null)
+    wordFreqBase = readWordFreqSource();
+    
+  List<WordFreq> res = new ArrayList<WordFreq>();
+  for (WordFreq wf : wordFreqBase) {
+    if (wf.word.startsWith(prefix))
+      res.add(wf);
+  }
+  return res;
+}
+//======== AUTOCOMPLETE END ============
 
 
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
