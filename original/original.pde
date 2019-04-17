@@ -22,6 +22,9 @@ final int DPIofYourDeviceScreen = 277; //200; //you will need to look up the DPI
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
 
+//Location Variables
+int textLocation = 1280/2; //70;
+
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
@@ -62,7 +65,7 @@ void draw()
   {
     fill(128);
     textAlign(CENTER);
-    text("Click to start time!", 280, 150); //display this messsage until the user clicks!
+    text("Click to start time!", textLocation, 90); //display this messsage until the user clicks!
   }
 
   if (startTime==0 & mousePressed)
@@ -72,29 +75,43 @@ void draw()
 
   if (startTime!=0)
   {
+    rectMode(CENTER);
+    fill(255);
+    stroke(10);
+    rect(textLocation, 90, 600, 150);
+    rectMode(CORNER);
     //feel free to change the size and position of the target/entered phrases and next button 
-    textAlign(LEFT); //align the text left
+    textAlign(CENTER);
     fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
+    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, textLocation, 50); //draw the trial count
     fill(128);
-    text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped +"|", 70, 140); //draw what the user has entered thus far 
+    text("Target:   " + currentPhrase, textLocation, 100); //draw the target string
+    text("Entered:  " + currentTyped +"|", textLocation, 140); //draw what the user has entered thus far 
 
     //draw very basic next button
     fill(255, 0, 0);
     rect(600, 600, 200, 200); //draw next button
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
-
-    //my draw code
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-    textAlign(CENTER);
-    fill(200);
-    text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+    
+    drawInputUI();
   }
+}
+
+void mousePressed()
+{
+  checkInputUI();
+
+  //You are allowed to have a next button outside the 1" area
+  if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
+  {
+    System.out.println(autoComplete(currentTyped));
+    nextTrial(); //if so, advance to next trial
+  }
+}
+
+void mouseDragged() {
+  System.out.println(mouseX + " " + mouseY);
 }
 
 //my terrible implementation you can entirely replace
@@ -103,9 +120,19 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
   return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
 }
 
+void drawInputUI() {
+  //my draw code
+  fill(255, 0, 0); //red button
+  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
+  fill(0, 255, 0); //green button
+  rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
+  textAlign(CENTER);
+  fill(200);
+  text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+}
+
 //my terrible implementation you can entirely replace
-void mousePressed()
-{
+void checkInputUI() {
   if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
   {
     currentLetter --;
@@ -128,13 +155,6 @@ void mousePressed()
       currentTyped = currentTyped.substring(0, currentTyped.length()-1);
     else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
       currentTyped+=currentLetter;
-  }
-
-  //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
-  {
-    System.out.println(autoComplete(currentTyped));
-    nextTrial(); //if so, advance to next trial
   }
 }
 
