@@ -254,7 +254,10 @@ List<WordFreq> autoComplete(String prefix) {
   }
   return res;
 }
-//======== AUTOCOMPLETE END ============
+
+
+//======== AUTOCOMPLETE END =========== //
+
 
 
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
