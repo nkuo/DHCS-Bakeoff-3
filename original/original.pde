@@ -164,6 +164,7 @@ void nineExtensionsSetup() {
   nineKeys.add(new ArrayList<Character>(Arrays.asList('v','w','x')));
   nineKeys.add(new ArrayList<Character>(Arrays.asList('y','z')));
   
+  /*
   ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,1)));
   ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,2)));
   ninePos.add(new ArrayList<Integer>(Arrays.asList(1,4,5)));
@@ -173,6 +174,7 @@ void nineExtensionsSetup() {
   ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,7)));
   ninePos.add(new ArrayList<Integer>(Arrays.asList(6,4,8)));
   ninePos.add(new ArrayList<Integer>(Arrays.asList(7,5)));
+  */
     
   cornerX = width/2-sizeOfInputArea/2;
   cornerY = height/2-sizeOfInputArea/2+sizeOfInputArea/5;
@@ -180,6 +182,17 @@ void nineExtensionsSetup() {
   totalY = sizeOfInputArea*4/5;
   rows = 3;
   cols = 3;
+  
+  for (int i = 0; i < rows; i++) {
+    ArrayList<Integer> indices = new ArrayList<Integer>();
+    for (int j = 0; j < cols; j++) {
+      indices.add(i*rows+j);
+    }
+    for (int j = 0; j < cols; j++) {
+      ninePos.add(new ArrayList<Integer>(indices));
+    }
+  }
+  ninePos.get(8).remove(0);
 }
   
 void drawNineSquares(String[] text) {
@@ -212,7 +225,11 @@ void nineExtensionUI() {
   
   String[] text = new String[nineKeys.size()];
   for (int i = 0; i < nineKeys.size(); i++) {
-    text[i] = nineKeys.get(i).toString();
+    String currText = "";
+    for (int j = 0; j < nineKeys.get(i).size(); j++)
+      currText += nineKeys.get(i).get(j) + " ";
+    currText = currText.substring(0, currText.length()-1);
+    text[i] = currText;
   }
   if (clicked != -1) {
     ArrayList<Integer> indices = ninePos.get(clicked);
