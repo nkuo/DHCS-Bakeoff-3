@@ -43,6 +43,8 @@ void setup()
   
   //====== AUTOCOMPLETE CODE =====
   wordFreqBase = readWordFreqSource();
+  //====== NINEKEYS========
+  nineExtensionsSetup();
 }
 
 //You can modify anything in here. This is just a basic implementation.
@@ -100,7 +102,7 @@ void draw()
 
 void mousePressed()
 {
-  checkInputUI();
+  mousePressedUI();
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
@@ -110,8 +112,13 @@ void mousePressed()
   }
 }
 
-void mouseDragged() {
-  System.out.println(mouseX + " " + mouseY);
+void mouseClicked() {
+  mouseClickedUI();
+}
+  
+
+void mouseDragged() { // might be useful for 
+  //System.out.println(mouseX + " " + mouseY);
 }
 
 //my terrible implementation you can entirely replace
@@ -121,43 +128,208 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 }
 
 void drawInputUI() {
-  //my draw code
-  fill(255, 0, 0); //red button
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-  fill(0, 255, 0); //green button
-  rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-  textAlign(CENTER);
+  //scaffoldDrawInputUI();
+  nineExtensionUI();
+}
+
+void mousePressedUI() {
+  //scaffoldInputCheck();
+}
+
+void mouseClickedUI() {
+  nineExtensionClicked();
+  
+}
+
+//========NineExtensionCode=======
+ArrayList<ArrayList<Character>> nineKeys = new ArrayList<ArrayList<Character>>();
+ArrayList<ArrayList<Integer>> ninePos = new ArrayList<ArrayList<Integer>>();
+float cornerX;
+float cornerY;
+float totalX;
+float totalY;
+int rows;
+int cols;
+
+int clicked = -1;
+
+void nineExtensionsSetup() {
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('a','b','c')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('d','e','f')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('g','h','i')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('j','k','l')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('m','n','o')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('p','q','r')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('s','t','u')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('v','w','x')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('y','z')));
+  
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,1)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,2)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(1,4,5)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,6)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,1,5)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(2,4,8)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,7)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(6,4,8)));
+  ninePos.add(new ArrayList<Integer>(Arrays.asList(7,5)));
+    
+  cornerX = width/2-sizeOfInputArea/2;
+  cornerY = height/2-sizeOfInputArea/2+sizeOfInputArea/5;
+  totalX = sizeOfInputArea;
+  totalY = sizeOfInputArea*4/5;
+  rows = 3;
+  cols = 3;
+}
+  
+void drawNineSquares(String[] text) {
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      float x = cornerX+totalX/cols*j;
+      float y = cornerY+totalY/rows*i;
+      float w = totalX/cols;
+      float h = totalY/rows;
+      fill(255);
+      rect(x, y, w, h);
+      int index = i*rows+j;
+      fill(0);
+      textAlign(CENTER);
+      text(text[index], x+w/2, y+h/2);
+    }
+  }
+}
+
+void nineExtensionUI() {
+  
+  rectMode(CORNER);
   fill(200);
-  text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+  stroke(10);
+  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
+  rect(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
+  fill(0);
+  text("SPACE", width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  text("BACKSPACE", width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  
+  String[] text = new String[nineKeys.size()];
+  for (int i = 0; i < nineKeys.size(); i++) {
+    text[i] = nineKeys.get(i).toString();
+  }
+  if (clicked != -1) {
+    ArrayList<Integer> indices = ninePos.get(clicked);
+    for (int i = 0; i < indices.size(); i++) {
+      text[indices.get(i)] = nineKeys.get(clicked).get(i).toString();
+    }
+  }
+  
+  drawNineSquares(text);
 }
 
-//my terrible implementation you can entirely replace
-void checkInputUI() {
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    currentLetter --;
-    if (currentLetter<'_') //wrap around to z
-      currentLetter = 'z';
+int getCurrClicked() {
+  int clicked = -1;
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      float x = cornerX+totalX/cols*j;
+      float y = cornerY+totalY/rows*i;
+      float w = totalX/cols;
+      float h = totalY/rows;
+      int index = i*rows+j;
+      if (didMouseClick(x,y,w,h))
+        clicked = index;
+    }
   }
+  return clicked;
+}
 
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentLetter ++;
-    if (currentLetter>'z') //wrap back to space (aka underscore)
-      currentLetter = '_';
+void nineExtensionClicked() {
+  int currClicked = getCurrClicked();
+  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5)) { //space
+    currentTyped += " ";
+    return;
   }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
-      currentTyped+=" ";
-    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped+=currentLetter;
+  if (didMouseClick(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5) && currentTyped.length() > 0) { //backspace
+    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+    return;
+  }
+  
+  if (clicked == -1) { //if none clicked currently
+    clicked = getCurrClicked();
+  }
+  else {
+    ArrayList<Integer> indices = ninePos.get(clicked);
+    for (int i = 0; i < indices.size(); i++) {
+      if (currClicked == indices.get(i)) {
+        currentTyped += nineKeys.get(clicked).get(i);
+      }
+    }
+    clicked = -1;
   }
 }
 
+
+
+
+
+//========AUTOCOMPLETE CODE===========
+/* 
+   Usage: autoComplete(String prefix) returns an ArrayList of WordFreq (sorted by frequency)
+   where each WordFreq is a tuple of word (String) and freq (Long) 
+*/
+String wordFreqSourceFile = "ngrams/count_1w.txt";
+List<WordFreq> wordFreqBase;
+  
+class WordFreq {
+  public final String word;
+  public final long freq;
+  public WordFreq(String word, long freq) {
+    this.word = word;
+    this.freq = freq;
+  }
+  
+  public String toString() {
+    return String.format("(%s, %d)", word, freq);
+  }
+}
+
+List<WordFreq> readWordFreqSource() {
+  List<WordFreq> wordFreq = new ArrayList<WordFreq>();
+  String[] lines = loadStrings(wordFreqSourceFile);
+  for (int i = 0 ; i < lines.length; i++) {
+    String[] pieces = split(lines[i], TAB);
+    wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
+  }
+  return wordFreq;  
+}
+
+List<WordFreq> autoComplete(String prefix) {
+  if (wordFreqBase == null)
+    wordFreqBase = readWordFreqSource();
+    
+  List<WordFreq> res = new ArrayList<WordFreq>();
+  for (WordFreq wf : wordFreqBase) {
+    if (wf.word.startsWith(prefix))
+      res.add(wf);
+  }
+  return res;
+}
+//======== AUTOCOMPLETE END ============
+
+
+//=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
+int computeLevenshteinDistance(String phrase1, String phrase2) //this computers error between two strings
+{
+  int[][] distance = new int[phrase1.length() + 1][phrase2.length() + 1];
+
+  for (int i = 0; i <= phrase1.length(); i++)
+    distance[i][0] = i;
+  for (int j = 1; j <= phrase2.length(); j++)
+    distance[0][j] = j;
+
+  for (int i = 1; i <= phrase1.length(); i++)
+    for (int j = 1; j <= phrase2.length(); j++)
+      distance[i][j] = min(min(distance[i - 1][j] + 1, distance[i][j - 1] + 1), distance[i - 1][j - 1] + ((phrase1.charAt(i - 1) == phrase2.charAt(j - 1)) ? 0 : 1));
+
+  return distance[phrase1.length()][phrase2.length()];
+}
 
 void nextTrial()
 {
@@ -232,64 +404,40 @@ void drawWatch()
   popMatrix();
 }
 
-//========AUTOCOMPLETE CODE===========
-/* 
-   Usage: autoComplete(String prefix) returns an ArrayList of WordFreq (sorted by frequency)
-   where each WordFreq is a tuple of word (String) and freq (Long) 
-*/
-String wordFreqSourceFile = "ngrams/count_1w.txt";
-List<WordFreq> wordFreqBase;
+void scaffoldDrawInputUI() {
   
-class WordFreq {
-  public final String word;
-  public final long freq;
-  public WordFreq(String word, long freq) {
-    this.word = word;
-    this.freq = freq;
-  }
-  
-  public String toString() {
-    return String.format("(%s, %d)", word, freq);
-  }
+  //my draw code
+  fill(255, 0, 0); //red button
+  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
+  fill(0, 255, 0); //green button
+  rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
+  textAlign(CENTER);
+  fill(200);
+  text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
 }
 
-List<WordFreq> readWordFreqSource() {
-  List<WordFreq> wordFreq = new ArrayList<WordFreq>();
-  String[] lines = loadStrings(wordFreqSourceFile);
-  for (int i = 0 ; i < lines.length; i++) {
-    String[] pieces = split(lines[i], TAB);
-    wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
+void scaffoldInputCheck() {
+  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+  {
+    currentLetter --;
+    if (currentLetter<'_') //wrap around to z
+      currentLetter = 'z';
   }
-  return wordFreq;  
-}
 
-List<WordFreq> autoComplete(String prefix) {
-  if (wordFreqBase == null)
-    wordFreqBase = readWordFreqSource();
-    
-  List<WordFreq> res = new ArrayList<WordFreq>();
-  for (WordFreq wf : wordFreqBase) {
-    if (wf.word.startsWith(prefix))
-      res.add(wf);
+  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
+  {
+    currentLetter ++;
+    if (currentLetter>'z') //wrap back to space (aka underscore)
+      currentLetter = '_';
   }
-  return res;
-}
-//======== AUTOCOMPLETE END ============
 
-
-//=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
-int computeLevenshteinDistance(String phrase1, String phrase2) //this computers error between two strings
-{
-  int[][] distance = new int[phrase1.length() + 1][phrase2.length() + 1];
-
-  for (int i = 0; i <= phrase1.length(); i++)
-    distance[i][0] = i;
-  for (int j = 1; j <= phrase2.length(); j++)
-    distance[0][j] = j;
-
-  for (int i = 1; i <= phrase1.length(); i++)
-    for (int j = 1; j <= phrase2.length(); j++)
-      distance[i][j] = min(min(distance[i - 1][j] + 1, distance[i][j - 1] + 1), distance[i - 1][j - 1] + ((phrase1.charAt(i - 1) == phrase2.charAt(j - 1)) ? 0 : 1));
-
-  return distance[phrase1.length()][phrase2.length()];
+  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
+  {
+    if (currentLetter=='_') //if underscore, consider that a space bar
+      currentTyped+=" ";
+    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
+      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
+      currentTyped+=currentLetter;
+  }
 }
