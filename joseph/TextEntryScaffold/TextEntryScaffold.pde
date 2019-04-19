@@ -300,6 +300,8 @@ char letterGuess(String prefix) {
   return (char) ascii_max;
 }
 
+// ======= END MOST LIKELY LETTER ======== //
+
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
 int computeLevenshteinDistance(String phrase1, String phrase2) //this computers error between two strings
 {
