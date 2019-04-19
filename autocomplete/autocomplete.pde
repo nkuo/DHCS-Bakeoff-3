@@ -1,3 +1,4 @@
+<<<<<<< autocomplete/autocomplete.pde
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -306,3 +307,5 @@ int computeLevenshteinDistance(String phrase1, String phrase2) //this computers 
 
   return distance[phrase1.length()][phrase2.length()];
 }
+=======
+>>>>>>> test.pde
