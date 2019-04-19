@@ -18,6 +18,24 @@ final int DPIofYourDeviceScreen = 277; //200; //you will need to look up the DPI
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
 
+//J9 Variables
+int version = 2; 
+//2 - Binary
+//3 - Cellphone
+int first = 0;
+int second = 0;
+int third = 0;
+String buttonText;
+
+String[] set1 = {"a", "b", "c", "d", "e", "f", "<-", ""};
+String[] set2 = {"g", "h", "i", "j", "k", "l", "<-", "m"};
+String[] set3 = {"n", "o", "p", "q", "r", "s", "<-", ""};
+String[] set4 = {"t", "u", "v", "w", "x", "y", "<-", "z"};
+String[] curSet;
+
+//9 Button Code
+String[] but9 = {" ","abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
@@ -65,6 +83,7 @@ void draw()
 
   if (startTime!=0)
   {
+    noStroke();
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
     fill(128);
@@ -78,15 +97,75 @@ void draw()
     rect(600, 600, 200, 200); //draw next button
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
+    
+    stroke(255);
+    if (version % 2 == 0) {
+      if (first + second >= 4) {
+        //Draw 8 Buttons
+        fill(255, 255, 0); //red button
+        rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        rect(width/2-sizeOfInputArea/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        rect(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        fill(0, 255, 255); //red button
+        rect(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        rect(width/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        rect(width/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        rect(width/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+        
+        textAlign(CENTER);
+        fill(200);
+        setCur();
+        text(curSet[0], width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/8); //draw current letter
+        text(curSet[2], width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/4+sizeOfInputArea/8);
+        text(curSet[4], width/2-sizeOfInputArea/4, height/2+sizeOfInputArea/8);
+        text(curSet[6], width/2-sizeOfInputArea/4, height/2+sizeOfInputArea/4+sizeOfInputArea/8);
+        text(curSet[1], width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/8);
+        text(curSet[3], width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/4+sizeOfInputArea/8);
+        text(curSet[5], width/2+sizeOfInputArea/4, height/2+sizeOfInputArea/8);
+        text(curSet[7], width/2+sizeOfInputArea/4, height/2+sizeOfInputArea/4+sizeOfInputArea/8);
+      } else {
+      //my draw code
+        fill(255, 0, 0); //red button
+        rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
+        fill(0, 255, 0); //green button
+        rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
+        textAlign(CENTER);
+        fill(200);
+        setCur();
+        text(buttonText, width/2, height/2-sizeOfInputArea/4); //draw current letter
+      }
+    } else if (version % 3 == 0) {
+      rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+      rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+      rect(width/2-sizeOfInputArea/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+      rect(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+      rect(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+      rect(width/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+      rect(width/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+      rect(width/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
+    }
+    
+  }
+}
 
-    //my draw code
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-    textAlign(CENTER);
-    fill(200);
-    text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
+void setCur() {
+  if (first == 0) {
+    buttonText = "<- A-M N-Z ->";
+  } else if (second == 0) {
+    if (first == 1) {
+      buttonText = " <- A-F G-M ->";
+    } else {
+      buttonText = " <- N-S T-Z ->";
+    }
+  } else if (first == 1 && second == 3) {
+    curSet = set1;
+  } else if (first == 1 && second == 4) {
+    curSet = set2;
+  } else if (first == 2 && second == 3) {
+    curSet = set3;
+  } else if (first == 2 && second == 4) {
+    curSet = set4;
   }
 }
 
@@ -99,28 +178,86 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    currentLetter --;
-    if (currentLetter<'_') //wrap around to z
-      currentLetter = 'z';
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentLetter ++;
-    if (currentLetter>'z') //wrap back to space (aka underscore)
-      currentLetter = '_';
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
+  if (first + second < 4) {
+    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+    {
+      if (first == 0) {
+        first = 1;
+      } else if (second == 0) {
+        System.out.println("Made it Here");
+        second = 3;
+      }
+    }
+  
+    if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
+    {
+      if (first == 0) {
+        first = 2;
+      } else if (second == 0) {
+        System.out.println("Made it Here");
+        second = 4;
+      }
+    }
+    
+    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
+    {
       currentTyped+=" ";
-    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped+=currentLetter;
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    
+  } else {
+    //8 Button Code
+    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      currentTyped+=curSet[0];
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      currentTyped+=curSet[2];
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    if (didMouseClick(width/2-sizeOfInputArea/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      currentTyped+=curSet[4];
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    if (didMouseClick(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      //currentTyped+=curSet[6];
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    if (didMouseClick(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      currentTyped+=curSet[1];
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    if (didMouseClick(width/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      currentTyped+=curSet[3];
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    if (didMouseClick(width/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      currentTyped+=curSet[5];
+      first = 0;
+      second = 0;
+      third = 0;
+    }
+    if (didMouseClick(width/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
+      currentTyped+=curSet[7];
+      first = 0;
+      second = 0;
+      third = 0;      
+    }
+   
   }
 
   //You are allowed to have a next button outside the 1" area
