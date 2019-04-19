@@ -103,6 +103,10 @@ void draw()
 void mousePressed()
 {
   mousePressedUI();
+  //fill(255);
+  //rect(0,0,75,100);
+  //fill(0);
+  //text(String.format("%d, %d", mouseX, mouseY), 50, 50);
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
@@ -114,6 +118,8 @@ void mousePressed()
 
 void mouseClicked() {
   mouseClickedUI();
+  //fill(0);
+  //text(String.format("%d, %d", mouseX, mouseY), 50, 100);
 }
   
 
@@ -134,10 +140,10 @@ void drawInputUI() {
 
 void mousePressedUI() {
   //scaffoldInputCheck();
+  nineExtensionClicked();
 }
 
 void mouseClickedUI() {
-  nineExtensionClicked();
   
 }
 
