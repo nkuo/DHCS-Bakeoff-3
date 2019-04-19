@@ -364,6 +364,50 @@ List<WordFreq> autoComplete(String prefix) {
 }
 //======== AUTOCOMPLETE END ============
 
+// ======= MOST PROBABLE LETTER ====== //
+int getMaxInd(int[] numbers){
+  int maxValue = numbers[0];
+  int maxInd = 0;
+  for(int i=1;i < numbers.length;i++){
+    if(numbers[i] > maxValue){
+    maxValue = numbers[i];
+    maxInd = i;
+  }
+  }
+  return maxInd;
+}
+
+char letterGuess(String prefix) {
+  // get the list of possible words
+  List<WordFreq> possibleWords = autoComplete(prefix);
+  // store the frequencies
+  int[] letter_freqs = new int[27]; // 26 letters in the alphabet plus the space
+  
+  // length of the prefix (tells me where the next letter is gonna be)
+  int len = prefix.length();
+    
+  // loop through the possible words (given the prefix) and find the most likely character
+  for (WordFreq wf : possibleWords) {
+    // if the string is at end of the possible word
+    if (len == wf.word.length())
+      letter_freqs[26] += 1;
+      
+    else {
+      char next_char = wf.word.charAt(len);
+      int  ascii = (int) next_char;
+      
+      // increment the frequency count depending on which char it is
+      letter_freqs[ascii - 97] += 1;
+    }
+  }
+  int max = getMaxInd(letter_freqs);
+  int ascii_max = max + 97;
+  
+  return (char) ascii_max;
+}
+
+// ======= END MOST LIKELY LETTER ======== //
+
 
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
 int computeLevenshteinDistance(String phrase1, String phrase2) //this computers error between two strings
