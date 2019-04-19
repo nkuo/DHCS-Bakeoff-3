@@ -282,16 +282,12 @@ void nineExtensionClicked() {
   }
 }
 
-
-
-
-
 //========AUTOCOMPLETE CODE===========
 /* 
    Usage: autoComplete(String prefix) returns an ArrayList of WordFreq (sorted by frequency)
    where each WordFreq is a tuple of word (String) and freq (Long) 
 */
-String wordFreqSourceFile = "ngrams/count_1w.txt";
+String wordFreqSourceFile = "count_1w.txt";
 List<WordFreq> wordFreqBase;
   
 class WordFreq {
@@ -311,11 +307,43 @@ List<WordFreq> readWordFreqSource() {
   List<WordFreq> wordFreq = new ArrayList<WordFreq>();
   String[] lines = loadStrings(wordFreqSourceFile);
   for (int i = 0 ; i < lines.length; i++) {
-    String[] pieces = split(lines[i], TAB);
+    String[] pieces = splitTokens(lines[i]); //CHANGED
     wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
   }
   return wordFreq;  
 }
+
+/* PRINT ERROR CODE
+try {
+      wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
+    }
+    catch(Exception e) {
+      background(255);
+      fill(0);
+      StackTraceElement[] trace = e.getStackTrace();
+      for (int j = 0; j < trace.length; j++)
+        text(trace[j].toString(), 10, 250 + j*20);
+      text(Arrays.toString(pieces), 10, 400);
+      //text(pieces[1], 10, 400);
+      break;
+    }
+    */
+    
+void printError(Exception e) {
+  //try {
+  //  CODE
+  //}
+  //catch (Exception e) {
+  //  printError(e);
+  //  //break
+  //}
+  
+  background(255);
+  fill(0);
+  StackTraceElement[] trace = e.getStackTrace();
+  for (int j = 0; j < trace.length; j++)
+    text(trace[j].toString(), 10, 250 + j*20);
+} 
 
 List<WordFreq> autoComplete(String prefix) {
   if (wordFreqBase == null)
