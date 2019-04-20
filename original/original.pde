@@ -205,6 +205,7 @@ void nineExtensionsSetup() {
       ninePos.add(new ArrayList<Integer>(indices));
     }
   }
+  ninePos.get(2).add(5);
   ninePos.get(8).remove(0);
 }
   
