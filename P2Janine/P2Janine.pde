@@ -108,7 +108,7 @@ void draw()
     text("NEXT > ", 650, 650); //draw next label
     
     //stroke(255);
-    if (version % 2 == 0) {
+    /*if (version % 2 == 0) {
       if (first + second >= 4) {
         //Draw 8 Buttons
         fill(255, 255, 0); //red button
@@ -144,39 +144,69 @@ void draw()
         setCur();
         text(buttonText, width/2, height/2-sizeOfInputArea/4); //draw current letter
       }
-    } else if (version % 3 == 0) {
+    } else */if (version % 3 == 0) {
       //10, 9, 7
       //Top Row
-      rect(width/2-sizeOfInputArea/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(2*sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(3*sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(4*sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(5*sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(2*sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(3*sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(4*sizeOfInputArea)/10+5, height/2-sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
+      fill(255);
+      rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      
+      fill(0, 102, 153);
+      textSize(20);
+      text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15);
+      text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("y",width/2+13, height/2-sizeOfInputArea/5+15); 
+      text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
       
       //Middle Row
-      rect(width/2-sizeOfInputArea/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(2*sizeOfInputArea)/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(3*sizeOfInputArea)/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(4*sizeOfInputArea)/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(5*sizeOfInputArea)/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(sizeOfInputArea)/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(2*sizeOfInputArea)/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(3*sizeOfInputArea)/10+20, height/2, sizeOfInputArea/15, sizeOfInputArea/15); 
+      fill(255);
+      rect(width/2-sizeOfInputArea/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(2*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(3*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(4*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(2*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(3*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(4*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+      
+      fill(0, 102, 153);
+      textSize(20);
+      text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15);
+      text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("y",width/2+13, height/2-sizeOfInputArea/5+15); 
+      text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+      text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
       
       //Middle Row
-      rect(width/2-sizeOfInputArea/10, height/2+sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(2*sizeOfInputArea)/10, height/2+sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2-(3*sizeOfInputArea)/10, height/2+sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15);  
-      rect(width/2, height/2+sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(sizeOfInputArea)/10, height/2+sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(2*sizeOfInputArea)/10, height/2+sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
-      rect(width/2+(3*sizeOfInputArea)/10, height/2+sizeOfInputArea/5, sizeOfInputArea/15, sizeOfInputArea/15); 
+      fill(255);
+      rect(width/2-sizeOfInputArea/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2-(4*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);  
+      rect(width/2+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
     }
     
   }
