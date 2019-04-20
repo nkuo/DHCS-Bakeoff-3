@@ -167,15 +167,15 @@ int cols;
 int clicked = -1;
 
 void nineExtensionsSetup() {
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('a','b','c')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('d','e','f')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('g','h','i')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('q','w','e')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('r','t','y')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('u','i','o','p')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('a','s','d')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('f','g','h')));
   nineKeys.add(new ArrayList<Character>(Arrays.asList('j','k','l')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('m','n','o')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('p','q','r')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('s','t','u')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('v','w','x')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('y','z')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('z','x','c')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('v','b','n')));
+  nineKeys.add(new ArrayList<Character>(Arrays.asList('m',',')));
   
   /*
   ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,1)));
