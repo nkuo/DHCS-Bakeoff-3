@@ -50,53 +50,60 @@ void setup()
 //You can modify anything in here. This is just a basic implementation.
 void draw()
 {
-  background(255); //clear background
-  drawWatch(); //draw watch background
-  fill(100);
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
-
-  if (finishTime!=0)
-  {
-    fill(128);
-    textAlign(CENTER);
-    text("Finished", 280, 150);
-    return;
-  }
-
-  if (startTime==0 & !mousePressed)
-  {
-    fill(128);
-    textAlign(CENTER);
-    text("Click to start time!", textLocation, 90); //display this messsage until the user clicks!
-  }
-
-  if (startTime==0 & mousePressed)
-  {
-    nextTrial(); //start the trials!
-  }
-
-  if (startTime!=0)
-  {
-    rectMode(CENTER);
-    fill(255);
-    stroke(10);
-    rect(textLocation, 90, 600, 150);
-    rectMode(CORNER);
-    //feel free to change the size and position of the target/entered phrases and next button 
-    textAlign(CENTER);
-    fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, textLocation, 50); //draw the trial count
-    fill(128);
-    text("Target:   " + currentPhrase, textLocation, 100); //draw the target string
-    text("Entered:  " + currentTyped +"|", textLocation, 140); //draw what the user has entered thus far 
-
-    //draw very basic next button
-    fill(255, 0, 0);
-    rect(600, 600, 200, 200); //draw next button
-    fill(255);
-    text("NEXT > ", 650, 650); //draw next label
+  if (currTrialNum != totalTrialNum) {
     
-    drawInputUI();
+    background(255); //clear background
+    drawWatch(); //draw watch background
+    fill(100);
+    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
+  
+    if (finishTime!=0)
+    {
+      fill(128);
+      textAlign(CENTER);
+      text("Finished", 280, 150);
+      return;
+    }
+  
+    if (startTime==0 & !mousePressed)
+    {
+      fill(128);
+      textAlign(CENTER);
+      text("Click to start time!", textLocation, 90); //display this messsage until the user clicks!
+    }
+  
+    if (startTime==0 & mousePressed)
+    {
+      nextTrial(); //start the trials!
+    }
+  
+    if (startTime!=0)
+    {
+      rectMode(CENTER);
+      fill(255);
+      stroke(10);
+      rect(textLocation, 90, 600, 150);
+      rectMode(CORNER);
+      //feel free to change the size and position of the target/entered phrases and next button 
+      textAlign(CENTER);
+      fill(128);
+      text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, textLocation, 50); //draw the trial count
+      fill(128);
+      text("Target:   " + currentPhrase, textLocation, 100); //draw the target string
+      text("Entered:  " + currentTyped +"|", textLocation, 140); //draw what the user has entered thus far 
+  
+      //draw very basic next button
+      fill(255, 0, 0);
+      rect(600, 600, 200, 200); //draw next button
+      fill(255);
+      text("NEXT > ", 650, 650); //draw next label
+      
+      drawInputUI();
+    }
+    
+  }
+  else {
+    drawWatch();
   }
 }
 
@@ -111,7 +118,7 @@ void mousePressed()
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
   {
-    System.out.println(autoComplete(currentTyped));
+    //System.out.println(autoComplete(currentTyped));
     nextTrial(); //if so, advance to next trial
   }
 }
@@ -577,15 +584,38 @@ void nextTrial()
 
 void drawWatch()
 {
-  float watchscale = DPIofYourDeviceScreen/138.0;
-  pushMatrix();
-  translate(width/2, height/2);
-  scale(watchscale);
-  imageMode(CENTER);
-  image(watch, 0, 0);
-  popMatrix();
+  if (currTrialNum != totalTrialNum) {
+    float watchscale = DPIofYourDeviceScreen/138.0;
+    pushMatrix();
+    translate(width/2, height/2);
+    scale(watchscale);
+    imageMode(CENTER);
+    image(watch, 0, 0);
+    popMatrix();
+  }
+  
+  else {
+    //pushMatrix();
+    fill(100);
+    rect(0,0,width, height);
+    fill(255);
+    text("Trials complete!", 650, 50);
+    
+    float wpm = (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f); //FYI - 60K is number of milliseconds in minute
+    float freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
+    float penalty = max(errorsTotal-freebieErrors, 0) * .5f;
+    
+    text("Total time taken: " + (finishTime - startTime), 650, 100); //output
+    text("Total letters entered: " + lettersEnteredTotal, 650, 150); //output
+    text("Total letters expected: " + lettersExpectedTotal, 650, 200); //output
+    text("Total errors entered: " + errorsTotal, 650, 250); //output    
+    text("Raw WPM: " + wpm, 650, 300); //output
+    text("Freebie errors: " + freebieErrors, 650, 350); //output
+    text("Penalty: " + penalty, 650, 400);
+    text("WPM w/ penalty: " + (wpm-penalty), 650, 450); //yes, minus, becuase higher WPM is better
+    text("==================", 650, 500);
+  }
 }
-
 void scaffoldDrawInputUI() {
   
   //my draw code
