@@ -27,14 +27,12 @@ int second = 0;
 int third = 0;
 String buttonText;
 
-String[] set1 = {"a", "b", "c", "d", "e", "f", "<-", ""};
-String[] set2 = {"g", "h", "i", "j", "k", "l", "<-", "m"};
-String[] set3 = {"n", "o", "p", "q", "r", "s", "<-", ""};
-String[] set4 = {"t", "u", "v", "w", "x", "y", "<-", "z"};
-String[] curSet;
-
-//9 Button Code
-String[] but9 = {" ","abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+String[] alphabet = {"q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m"};
+float[] top = {width/2-(5*sizeOfInputArea)/10+13, width/2-(4*sizeOfInputArea)/10+13, width/2-(3*sizeOfInputArea)/10+13, width/2-(2*sizeOfInputArea)/10+13, width/2-sizeOfInputArea/10+15,
+ width/2+13, width/2+(sizeOfInputArea)/10+13, width/2+(2*sizeOfInputArea)/10+13, width/2+(3*sizeOfInputArea)/10+13, width/2+(4*sizeOfInputArea)/10+13};
+float[] middle = {width/2-(4*sizeOfInputArea)/10+2,width/2-(3*sizeOfInputArea)/10+2,width/2-(2*sizeOfInputArea)/10+2,width/2-sizeOfInputArea/10+2,width/2+2,width/2+(sizeOfInputArea)/10+2,
+width/2+(2*sizeOfInputArea)/10+2,width/2+(3*sizeOfInputArea)/10+2,width/2+(4*sizeOfInputArea)/10+2};
+float[] bottom = {};
 
 //Location Variables
 int textLocation = 1280/2;
@@ -185,18 +183,17 @@ void draw()
       rect(width/2+(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
       
       fill(0, 102, 153);
-      textSize(20);
-      text("a",width/2-sizeOfInputArea/10+2, height/2+37); 
-      text("s",width/2-(2*sizeOfInputArea)/10+2, height/2+37); 
-      text("d",width/2-(3*sizeOfInputArea)/10+2, height/2+37); 
-      text("f",width/2-(4*sizeOfInputArea)/10+2, height/2+37); 
+      text("f",width/2-sizeOfInputArea/10+2, height/2+37); 
+      text("d",width/2-(2*sizeOfInputArea)/10+2, height/2+37); 
+      text("s",width/2-(3*sizeOfInputArea)/10+2, height/2+37); 
+      text("a",width/2-(4*sizeOfInputArea)/10+2, height/2+37); 
       text("g",width/2+2, height/2+36); 
       text("h",width/2+(sizeOfInputArea)/10+2, height/2+37); 
       text("j",width/2+(2*sizeOfInputArea)/10+2, height/2+36); 
       text("k",width/2+(3*sizeOfInputArea)/10+2, height/2+37); 
       text("l",width/2+(4*sizeOfInputArea)/10+2, height/2+37);  
       
-      //Middle Row
+      //Bottom Row
       fill(255);
       rect(width/2-sizeOfInputArea/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
       rect(width/2-(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
@@ -209,11 +206,10 @@ void draw()
       rect(width/2+(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
       
       fill(0, 102, 153);
-      textSize(20);
-      text("z",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
-      text("x",width/2-(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-      text("c",width/2-(3*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-      text("v",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
+      text("v",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
+      text("c",width/2-(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+      text("x",width/2-(3*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+      text("z",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
       text("b",width/2+16, height/2+sizeOfInputArea/5+16); 
       text("n",width/2+(sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
       text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
@@ -221,7 +217,7 @@ void draw()
   }
 }
 
-void setCur() {
+/*void setCur() {
   if (first == 0) {
     buttonText = "<- A-M N-Z ->";
   } else if (second == 0) {
@@ -239,12 +235,18 @@ void setCur() {
   } else if (first == 2 && second == 4) {
     curSet = set4;
   }
-}
+}*/
 
 //my terrible implementation you can entirely replace
 boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
 {
   return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
+}
+
+String[] closestButtons() {
+  String[] ret = {};
+  
+  return ret; 
 }
 
 //my terrible implementation you can entirely replace
