@@ -44,7 +44,7 @@ void setup()
   //====== AUTOCOMPLETE CODE =====
   wordFreqBase = readWordFreqSource();
   //====== NINEKEYS========
-  nineExtensionsSetup();
+  gestureSetup();
 }
 
 //You can modify anything in here. This is just a basic implementation.
@@ -135,158 +135,170 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 
 void drawInputUI() {
   //scaffoldDrawInputUI();
-  nineExtensionUI();
+  gestureUI();
 }
 
 void mousePressedUI() {
   //scaffoldInputCheck();
-  nineExtensionClicked();
+  gestureClicked();
 }
 
 void mouseClickedUI() {
   
 }
 
-//========NineExtensionCode=======
-ArrayList<ArrayList<Character>> nineKeys = new ArrayList<ArrayList<Character>>();
-ArrayList<ArrayList<Integer>> ninePos = new ArrayList<ArrayList<Integer>>();
-float cornerX;
-float cornerY;
-float totalX;
-float totalY;
-int rows;
-int cols;
+//========Gesture Code=========
+void gestureSetup() {
+}
 
-int clicked = -1;
-
-void nineExtensionsSetup() {
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('a','b','c')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('d','e','f')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('g','h','i')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('j','k','l')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('m','n','o')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('p','q','r')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('s','t','u')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('v','w','x')));
-  nineKeys.add(new ArrayList<Character>(Arrays.asList('y','z')));
+void gestureUI() {
   
-  /*
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,1)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,2)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(1,4,5)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,6)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,1,5)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(2,4,8)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,7)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(6,4,8)));
-  ninePos.add(new ArrayList<Integer>(Arrays.asList(7,5)));
-  */
+}
+
+void gestureClicked() {
+  
+}
+
+////========NineExtensionCode=======
+//ArrayList<ArrayList<Character>> nineKeys = new ArrayList<ArrayList<Character>>();
+//ArrayList<ArrayList<Integer>> ninePos = new ArrayList<ArrayList<Integer>>();
+//float cornerX;
+//float cornerY;
+//float totalX;
+//float totalY;
+//int rows;
+//int cols;
+
+//int clicked = -1;
+
+//void nineExtensionsSetup() {
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('a','b','c')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('d','e','f')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('g','h','i')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('j','k','l')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('m','n','o')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('p','q','r')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('s','t','u')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('v','w','x')));
+//  nineKeys.add(new ArrayList<Character>(Arrays.asList('y','z')));
+  
+//  /*
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,1)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,2)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(1,4,5)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,6)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,1,5)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(2,4,8)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,7)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(6,4,8)));
+//  ninePos.add(new ArrayList<Integer>(Arrays.asList(7,5)));
+//  */
     
-  cornerX = width/2-sizeOfInputArea/2;
-  cornerY = height/2-sizeOfInputArea/2+sizeOfInputArea/5;
-  totalX = sizeOfInputArea;
-  totalY = sizeOfInputArea*4/5;
-  rows = 3;
-  cols = 3;
+//  cornerX = width/2-sizeOfInputArea/2;
+//  cornerY = height/2-sizeOfInputArea/2+sizeOfInputArea/5;
+//  totalX = sizeOfInputArea;
+//  totalY = sizeOfInputArea*4/5;
+//  rows = 3;
+//  cols = 3;
   
-  for (int i = 0; i < rows; i++) {
-    ArrayList<Integer> indices = new ArrayList<Integer>();
-    for (int j = 0; j < cols; j++) {
-      indices.add(i*rows+j);
-    }
-    for (int j = 0; j < cols; j++) {
-      ninePos.add(new ArrayList<Integer>(indices));
-    }
-  }
-  ninePos.get(8).remove(0);
-}
+//  for (int i = 0; i < rows; i++) {
+//    ArrayList<Integer> indices = new ArrayList<Integer>();
+//    for (int j = 0; j < cols; j++) {
+//      indices.add(i*rows+j);
+//    }
+//    for (int j = 0; j < cols; j++) {
+//      ninePos.add(new ArrayList<Integer>(indices));
+//    }
+//  }
+//  ninePos.get(8).remove(0);
+//}
   
-void drawNineSquares(String[] text) {
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      float x = cornerX+totalX/cols*j;
-      float y = cornerY+totalY/rows*i;
-      float w = totalX/cols;
-      float h = totalY/rows;
-      fill(255);
-      rect(x, y, w, h);
-      int index = i*rows+j;
-      fill(0);
-      textAlign(CENTER);
-      text(text[index], x+w/2, y+h/2);
-    }
-  }
-}
+//void drawNineSquares(String[] text) {
+//  for (int i = 0; i < rows; i++) {
+//    for (int j = 0; j < cols; j++) {
+//      float x = cornerX+totalX/cols*j;
+//      float y = cornerY+totalY/rows*i;
+//      float w = totalX/cols;
+//      float h = totalY/rows;
+//      fill(255);
+//      rect(x, y, w, h);
+//      int index = i*rows+j;
+//      fill(0);
+//      textAlign(CENTER);
+//      text(text[index], x+w/2, y+h/2);
+//    }
+//  }
+//}
 
-void nineExtensionUI() {
+//void nineExtensionUI() {
   
-  rectMode(CORNER);
-  fill(200);
-  stroke(10);
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
-  rect(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
-  fill(0);
-  text("SPACE", width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
-  text("BACKSPACE", width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+//  rectMode(CORNER);
+//  fill(200);
+//  stroke(10);
+//  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
+//  rect(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
+//  fill(0);
+//  text("SPACE", width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+//  text("BACKSPACE", width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
   
-  String[] text = new String[nineKeys.size()];
-  for (int i = 0; i < nineKeys.size(); i++) {
-    String currText = "";
-    for (int j = 0; j < nineKeys.get(i).size(); j++)
-      currText += nineKeys.get(i).get(j) + " ";
-    currText = currText.substring(0, currText.length()-1);
-    text[i] = currText;
-  }
-  if (clicked != -1) {
-    ArrayList<Integer> indices = ninePos.get(clicked);
-    for (int i = 0; i < indices.size(); i++) {
-      text[indices.get(i)] = nineKeys.get(clicked).get(i).toString();
-    }
-  }
+//  String[] text = new String[nineKeys.size()];
+//  for (int i = 0; i < nineKeys.size(); i++) {
+//    String currText = "";
+//    for (int j = 0; j < nineKeys.get(i).size(); j++)
+//      currText += nineKeys.get(i).get(j) + " ";
+//    currText = currText.substring(0, currText.length()-1);
+//    text[i] = currText;
+//  }
+//  if (clicked != -1) {
+//    ArrayList<Integer> indices = ninePos.get(clicked);
+//    for (int i = 0; i < indices.size(); i++) {
+//      text[indices.get(i)] = nineKeys.get(clicked).get(i).toString();
+//    }
+//  }
   
-  drawNineSquares(text);
-}
+//  drawNineSquares(text);
+//}
 
-int getCurrClicked() {
-  int clicked = -1;
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
-      float x = cornerX+totalX/cols*j;
-      float y = cornerY+totalY/rows*i;
-      float w = totalX/cols;
-      float h = totalY/rows;
-      int index = i*rows+j;
-      if (didMouseClick(x,y,w,h))
-        clicked = index;
-    }
-  }
-  return clicked;
-}
+//int getCurrClicked() {
+//  int clicked = -1;
+//  for (int i = 0; i < rows; i++) {
+//    for (int j = 0; j < cols; j++) {
+//      float x = cornerX+totalX/cols*j;
+//      float y = cornerY+totalY/rows*i;
+//      float w = totalX/cols;
+//      float h = totalY/rows;
+//      int index = i*rows+j;
+//      if (didMouseClick(x,y,w,h))
+//        clicked = index;
+//    }
+//  }
+//  return clicked;
+//}
 
-void nineExtensionClicked() {
-  int currClicked = getCurrClicked();
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5)) { //space
-    currentTyped += " ";
-    return;
-  }
-  if (didMouseClick(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5) && currentTyped.length() > 0) { //backspace
-    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    return;
-  }
+//void nineExtensionClicked() {
+//  int currClicked = getCurrClicked();
+//  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5)) { //space
+//    currentTyped += " ";
+//    return;
+//  }
+//  if (didMouseClick(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5) && currentTyped.length() > 0) { //backspace
+//    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+//    return;
+//  }
   
-  if (clicked == -1) { //if none clicked currently
-    clicked = getCurrClicked();
-  }
-  else {
-    ArrayList<Integer> indices = ninePos.get(clicked);
-    for (int i = 0; i < indices.size(); i++) {
-      if (currClicked == indices.get(i)) {
-        currentTyped += nineKeys.get(clicked).get(i);
-      }
-    }
-    clicked = -1;
-  }
-}
+//  if (clicked == -1) { //if none clicked currently
+//    clicked = getCurrClicked();
+//  }
+//  else {
+//    ArrayList<Integer> indices = ninePos.get(clicked);
+//    for (int i = 0; i < indices.size(); i++) {
+//      if (currClicked == indices.get(i)) {
+//        currentTyped += nineKeys.get(clicked).get(i);
+//      }
+//    }
+//    clicked = -1;
+//  }
+//}
 
 //========AUTOCOMPLETE CODE===========
 /* 
