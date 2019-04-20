@@ -25,6 +25,9 @@ PImage watch;
 //Location Variables
 int textLocation = 1280/2; //70;
 
+// ===== NEXT LETTER CODE ===== 
+char next_letter_guess;
+
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
@@ -50,6 +53,9 @@ void setup()
 //You can modify anything in here. This is just a basic implementation.
 void draw()
 {
+  String[] words = currentTyped.split(" ");
+  String curr_word = words[words.length - 1];
+  next_letter_guess = letterGuess(curr_word);
   background(255); //clear background
   drawWatch(); //draw watch background
   fill(100);
@@ -223,11 +229,14 @@ void nineExtensionUI() {
   rectMode(CORNER);
   fill(200);
   stroke(10);
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
-  rect(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5);
+  rect(width/2- (1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5);
+  rect(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5);
+  rect(width/2 + (0.5 * sizeOfInputArea/3), height/2 -sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5);
   fill(0);
-  text("SPACE", width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
-  text("BACKSPACE", width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  text("SPACE", width/2- sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  text("BACK", width/2, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  text(next_letter_guess, width/2 + sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  
   
   String[] text = new String[nineKeys.size()];
   for (int i = 0; i < nineKeys.size(); i++) {
@@ -265,12 +274,17 @@ int getCurrClicked() {
 
 void nineExtensionClicked() {
   int currClicked = getCurrClicked();
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5)) { //space
+  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5)) { //space
     currentTyped += " ";
     return;
   }
-  if (didMouseClick(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/5) && currentTyped.length() > 0) { //backspace
+  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5) && currentTyped.length() > 0) { //backspace
     currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+    return;
+  }
+  
+  if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5)) {
+    currentTyped += next_letter_guess;
     return;
   }
   
