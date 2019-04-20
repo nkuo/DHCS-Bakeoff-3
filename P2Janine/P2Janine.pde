@@ -102,7 +102,7 @@ void draw()
     text("Entered:  " + currentTyped +"|", textLocation, 140); //draw what the user has entered thus far 
 
     //draw very basic next button
-    fill(255, 0, 0);
+    fill(0, 200, 0);
     rect(600, 600, 200, 200); //draw next button
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
@@ -168,7 +168,7 @@ void draw()
       text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
       text("y",width/2+13, height/2-sizeOfInputArea/5+15+40); 
       text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+42); 
+      text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+41); 
       text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
       text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
       
@@ -204,10 +204,20 @@ void draw()
       rect(width/2-(4*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);  
       rect(width/2+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
       rect(width/2+(sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);
+      fill(255, 50, 0);
       rect(width/2+(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+      
+      fill(0, 102, 153);
+      textSize(20);
+      text("z",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
+      text("x",width/2-(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+      text("c",width/2-(3*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+      text("v",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
+      text("b",width/2+16, height/2+sizeOfInputArea/5+16); 
+      text("n",width/2+(sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+      text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
     }
-    
   }
 }
 
@@ -240,7 +250,7 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  if (first + second < 4) {
+  /*if (first + second < 4) {
     if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
     {
       if (first == 0) {
@@ -320,7 +330,7 @@ void mousePressed()
       third = 0;      
     }
    
-  }
+  }*/
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
