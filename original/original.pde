@@ -148,61 +148,101 @@ void mouseClickedUI() {
 }
 
 //========Gesture Code=========
+ArrayList<Float> xPos = new ArrayList<Float>();
+float[] yPos = new float[3];
+char[] keySet = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
+int firstRowLim = 10;
+int secondRowLim = 19;
 void gestureSetup() {
+  int i = 0;
+  yPos[0] = height/2-sizeOfInputArea/5+15+35;
+  yPos[1] = height/2+32;
+  yPos[2] = height/2+sizeOfInputArea/5+11;
+  while (i < keySet.length) {
+    if (i < firstRowLim) {
+      float x = width/2-(10/2*sizeOfInputArea)/10+13;
+      x += i*sizeOfInputArea/10;
+      xPos.add(x);
+    }
+    else if (i < secondRowLim) {
+      float x = width/2-(4*sizeOfInputArea)/10+2;
+      x += (i-firstRowLim)*sizeOfInputArea/10;
+      xPos.add(x);
+      
+    }
+    else {
+      float x = width/2-(4*sizeOfInputArea)/10+16;
+      x += (i-secondRowLim)*sizeOfInputArea/10;
+      xPos.add(x);
+    }
+    i++;
+  }  
 }
 
 void gestureUI() {
   fill(255);
-  rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rectMode(CENTER);
+  for (int i = 0; i < xPos.size(); i++) {
+    if (i < firstRowLim) {
+      fill(255);
+      rect(xPos.get(i), yPos[0], sizeOfInputArea/13, sizeOfInputArea/13);
+      fill(0, 102, 153);
+      textSize(20);
+      text(keySet[i]+"", xPos.get(i), yPos[0]+5);
+    }
+  }
+    
+  rectMode(CORNER);
   
-  fill(0, 102, 153);
-  textSize(20);
-  text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15);
-  text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("y",width/2+13, height/2-sizeOfInputArea/5+15); 
-  text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+  
+  //rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  //rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+  
+  //fill(0, 102, 153);
+  //textSize(20);
+  //text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15+40);
+  //text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+  //text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+  //text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+  //text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+  //text("y",width/2+13, height/2-sizeOfInputArea/5+15+40); 
+  //text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+  //text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+41); 
+  //text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+  //text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
   
   //Middle Row
   fill(255);
-  rect(width/2-sizeOfInputArea/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-(2*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-(3*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-(4*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(2*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(3*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(4*sizeOfInputArea)/10-8, height/2, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2-sizeOfInputArea/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2-(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2-(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2-(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2+(sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2+(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2+(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2+(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
   
   fill(0, 102, 153);
-  textSize(20);
-  text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15);
-  text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("y",width/2+13, height/2-sizeOfInputArea/5+15); 
-  text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
-  text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15); 
+  text("f",width/2-sizeOfInputArea/10+2, height/2+37); 
+  text("d",width/2-(2*sizeOfInputArea)/10+2, height/2+37); 
+  text("s",width/2-(3*sizeOfInputArea)/10+2, height/2+37); 
+  text("a",width/2-(4*sizeOfInputArea)/10+2, height/2+37); 
+  text("g",width/2+2, height/2+36); 
+  text("h",width/2+(sizeOfInputArea)/10+2, height/2+37); 
+  text("j",width/2+(2*sizeOfInputArea)/10+2, height/2+36); 
+  text("k",width/2+(3*sizeOfInputArea)/10+2, height/2+37); 
+  text("l",width/2+(4*sizeOfInputArea)/10+2, height/2+37);  
   
-  //Middle Row
+  //Bottom Row
   fill(255);
   rect(width/2-sizeOfInputArea/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
   rect(width/2-(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
@@ -210,8 +250,28 @@ void gestureUI() {
   rect(width/2-(4*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);  
   rect(width/2+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
   rect(width/2+(sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+  rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);
+  fill(255, 50, 0);
   rect(width/2+(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+  
+  fill(0, 102, 153);
+  text("v",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
+  text("c",width/2-(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+  text("x",width/2-(3*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+  text("z",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
+  text("b",width/2+16, height/2+sizeOfInputArea/5+16); 
+  text("n",width/2+(sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+  text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);
+  
+  for (int i = 0; i < keySet.length; i++) {
+    fill(0);
+    if (i < firstRowLim)
+      ellipse(xPos.get(i), yPos[0], 10, 10);
+    else if (i < secondRowLim)
+      ellipse(xPos.get(i), yPos[1], 10, 10);
+    else
+      ellipse(xPos.get(i), yPos[2], 10, 10);
+  }
 }
 
 void gestureClicked() {
