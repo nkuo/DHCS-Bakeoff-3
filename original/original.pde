@@ -54,10 +54,6 @@ void setup()
 void draw()
 {
   if (currTrialNum != totalTrialNum) {
-    
-    String[] words = currentTyped.split(" ");
-    String curr_word = words[words.length - 1];
-    next_letter_guess = letterGuess(curr_word);
     background(255); //clear background
     drawWatch(); //draw watch background
     fill(100);
@@ -153,6 +149,11 @@ void drawInputUI() {
 void mousePressedUI() {
   //scaffoldInputCheck();
   nineExtensionClicked();
+  String[] words = currentTyped.split(" ");
+  String curr_word = words[words.length - 1];
+  if (currentTyped.length() >= 1 && currentTyped.charAt(currentTyped.length() - 1) == (char) 32) // space ascii 
+    curr_word = "";
+  next_letter_guess = letterGuess(curr_word);
 }
 
 void mouseClickedUI() {
@@ -385,8 +386,8 @@ List<WordFreq> autoComplete(String prefix) {
 //======== AUTOCOMPLETE END ============
 
 // ======= MOST PROBABLE LETTER ====== //
-int getMaxInd(int[] numbers){
-  int maxValue = numbers[0];
+int getMaxInd(long[] numbers){
+  long maxValue = numbers[0];
   int maxInd = 0;
   for(int i=1;i < numbers.length;i++){
     if(numbers[i] > maxValue){
@@ -401,7 +402,7 @@ char letterGuess(String prefix) {
   // get the list of possible words
   List<WordFreq> possibleWords = autoComplete(prefix);
   // store the frequencies
-  int[] letter_freqs = new int[27]; // 26 letters in the alphabet plus the space
+  long[] letter_freqs = new long[27]; // 26 letters in the alphabet plus the space
   
   // length of the prefix (tells me where the next letter is gonna be)
   int len = prefix.length();
@@ -410,18 +411,21 @@ char letterGuess(String prefix) {
   for (WordFreq wf : possibleWords) {
     // if the string is at end of the possible word
     if (len == wf.word.length())
-      letter_freqs[26] += 1;
+      letter_freqs[26] += wf.freq;
       
     else {
       char next_char = wf.word.charAt(len);
       int  ascii = (int) next_char;
       
       // increment the frequency count depending on which char it is
-      letter_freqs[ascii - 97] += 1;
+      letter_freqs[ascii - 97] += wf.freq;
     }
   }
   int max = getMaxInd(letter_freqs);
   int ascii_max = max + 97;
+  
+  if (max == 26)
+    return (char) 32;
   
   return (char) ascii_max;
 }
