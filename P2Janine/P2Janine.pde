@@ -395,7 +395,40 @@ void nextTrial()
   //currentPhrase = "abc"; // uncomment this to override the test phrase (useful for debugging)
 }
 
-
+void drawWatch()
+{
+  if (currTrialNum != totalTrialNum) {
+    float watchscale = DPIofYourDeviceScreen/138.0;
+    pushMatrix();
+    translate(width/2, height/2);
+    scale(watchscale);
+    imageMode(CENTER);
+    image(watch, 0, 0);
+    popMatrix();
+  }
+  
+  else {
+    //pushMatrix();
+    fill(100);
+    rect(0,0,width, height);
+    fill(255);
+    text("Trials complete!", 650, 50);
+    
+    float wpm = (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f); //FYI - 60K is number of milliseconds in minute
+    float freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
+    float penalty = max(errorsTotal-freebieErrors, 0) * .5f;
+    
+    text("Total time taken: " + (finishTime - startTime), 650, 100); //output
+    text("Total letters entered: " + lettersEnteredTotal, 650, 150); //output
+    text("Total letters expected: " + lettersExpectedTotal, 650, 200); //output
+    text("Total errors entered: " + errorsTotal, 650, 250); //output    
+    text("Raw WPM: " + wpm, 650, 300); //output
+    text("Freebie errors: " + freebieErrors, 650, 350); //output
+    text("Penalty: " + penalty, 650, 400);
+    text("WPM w/ penalty: " + (wpm-penalty), 650, 450); //yes, minus, becuase higher WPM is better
+    text("==================", 650, 500);
+  }
+}
 
 
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
