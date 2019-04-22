@@ -28,6 +28,10 @@ int textLocation = 1280/2; //70;
 // ===== NEXT LETTER CODE ===== 
 char next_letter_guess;
 
+// ===== NEXT WORD CODE =====
+String[] word_guesses = {"", "", ""};
+float topbuff = sizeOfInputArea/8;
+
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
@@ -39,7 +43,7 @@ void setup()
   Collections.shuffle(Arrays.asList(phrases), new Random()); //randomize the order of the phrases with no seed
   //Collections.shuffle(Arrays.asList(phrases), new Random(100)); //randomize the order of the phrases with seed 100; same order every time, useful for testing
  
-  orientation(LANDSCAPE); //can also be PORTRAIT - sets orientation on android device
+  orientation(PORTRAIT); //can also be PORTRAIT - sets orientation on android device
   size(1280, 720); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   textFont(createFont("Arial", 24)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   noStroke(); //my code doesn't use any strokes
@@ -149,11 +153,15 @@ void drawInputUI() {
 void mousePressedUI() {
   //scaffoldInputCheck();
   nineExtensionClicked();
+  
+  // GUESS THE NEXT LETTER
   String[] words = currentTyped.split(" ");
   String curr_word = words[words.length - 1];
   if (currentTyped.length() >= 1 && currentTyped.charAt(currentTyped.length() - 1) == (char) 32) // space ascii 
     curr_word = "";
   next_letter_guess = letterGuess(curr_word);
+  
+  // GUESS THE THREE MOST LIKELY WORDS
 }
 
 void mouseClickedUI() {
@@ -236,13 +244,25 @@ void nineExtensionUI() {
   rectMode(CORNER);
   fill(200);
   stroke(10);
-  rect(width/2- (1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5);
-  rect(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5);
-  rect(width/2 + (0.5 * sizeOfInputArea/3), height/2 -sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5);
+  
+  // THREE MOST LIKELY WORDS
+  rect(width/2 - (1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
+  rect(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
+  rect(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
   fill(0);
-  text("SPACE", width/2- sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
-  text("BACK", width/2, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
-  text(next_letter_guess, width/2 + sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  text(word_guesses[0], width/2- sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  text(word_guesses[1], width/2, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  text(word_guesses[2], width/2 + sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+  
+  // SPACE | BACK | NEXT LETTER PRED
+  fill(200);
+  rect(width/2 - (1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff);
+  rect(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff);
+  rect(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff);
+  fill(0);
+  text("SPACE", width/2- sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2+topbuff);
+  text("BACK", width/2, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2+topbuff);
+  text(next_letter_guess, width/2 + sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2+topbuff);
   
   
   String[] text = new String[nineKeys.size()];
@@ -281,16 +301,32 @@ int getCurrClicked() {
 
 void nineExtensionClicked() {
   int currClicked = getCurrClicked();
-  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5)) { //space
+  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff)) { //space
     currentTyped += " ";
     return;
   }
-  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5) && currentTyped.length() > 0) { //backspace
+  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff) && currentTyped.length() > 0) { //backspace
     currentTyped = currentTyped.substring(0, currentTyped.length()-1);
     return;
   }
   
-  if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, sizeOfInputArea/5)) {
+  if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff)) {
+    currentTyped += next_letter_guess;
+    return;
+  }
+  
+  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff)) { //space
+    currentTyped += " ";
+    return;
+  }
+  
+  // AUTOCOMPLETE WORDS
+  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff) && currentTyped.length() > 0) { //backspace
+    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+    return;
+  }
+  
+  if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff)) {
     currentTyped += next_letter_guess;
     return;
   }
