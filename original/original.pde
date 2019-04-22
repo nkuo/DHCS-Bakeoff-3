@@ -5,6 +5,15 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.Long;
 
+/*
+TODOS:
+make certain into uncertain
+make getClosestChars
+filter based on sets of chars -> print out with this to see if possible (w/ adb on phone)
+create backspace and space button
+and autocomplete buttons
+*/
+
 
 String[] phrases; //contains all of the phrases
 int totalTrialNum = 2; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
@@ -35,12 +44,12 @@ void setup()
   phrases = loadStrings("phrases2.txt"); //load the phrase set into memory
   Collections.shuffle(Arrays.asList(phrases), new Random()); //randomize the order of the phrases with no seed
   //Collections.shuffle(Arrays.asList(phrases), new Random(100)); //randomize the order of the phrases with seed 100; same order every time, useful for testing
- 
+
   orientation(LANDSCAPE); //can also be PORTRAIT - sets orientation on android device
   size(1280, 720); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   textFont(createFont("Arial", 24)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   noStroke(); //my code doesn't use any strokes
-  
+
   //====== AUTOCOMPLETE CODE =====
   wordFreqBase = readWordFreqSource();
   //====== NINEKEYS========
@@ -95,18 +104,23 @@ void draw()
     rect(600, 600, 200, 200); //draw next button
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
-    
+
     drawInputUI();
+    mouseDraggedUI();
   }
 }
 
 void mousePressed()
 {
   mousePressedUI();
-  //fill(255);
-  //rect(0,0,75,100);
-  //fill(0);
-  //text(String.format("%d, %d", mouseX, mouseY), 50, 50);
+
+  //JAVA ONLY
+  entering = true;
+  oldX = new ArrayList<Integer>();
+  oldY = new ArrayList<Integer>();
+  distDiff = new ArrayList<Float>();
+  oldX.add(mouseX);
+  oldY.add(mouseY);
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
@@ -116,15 +130,20 @@ void mousePressed()
   }
 }
 
+void mouseReleased() {
+  //JAVA ONLY
+  entering = false;
+  currentTyped += convertToString(extractPosChars(distDiff));
+}
+
 void mouseClicked() {
   mouseClickedUI();
   //fill(0);
   //text(String.format("%d, %d", mouseX, mouseY), 50, 100);
 }
-  
 
-void mouseDragged() { // might be useful for 
-  //System.out.println(mouseX + " " + mouseY);
+
+void mouseDragged() { // might be useful for drag
 }
 
 //my terrible implementation you can entirely replace
@@ -143,154 +162,207 @@ void mousePressedUI() {
   gestureClicked();
 }
 
+void mouseDraggedUI() {
+  gestureMouseDragged();
+}
+
 void mouseClickedUI() {
-  
 }
 
 //========Gesture Code=========
 ArrayList<Float> xPos = new ArrayList<Float>();
-float[] yPos = new float[3];
-char[] keySet = {'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'};
+ArrayList<Float> yPos = new ArrayList<Float>();
+char[] keySet = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'};
 int firstRowLim = 10;
 int secondRowLim = 19;
+
+boolean entering = false;
+ArrayList<Integer> oldX = new ArrayList<Integer>();
+ArrayList<Integer> oldY = new ArrayList<Integer>();
+ArrayList<Float> distDiff = new ArrayList<Float>();
+ArrayList<Float> possibleX = new ArrayList<Float>();
+ArrayList<Float> possibleY = new ArrayList<Float>();
+
+int minPause = 3;
+int minGap = 3;
+float minDiff = 0.5;
+
 void gestureSetup() {
   int i = 0;
-  yPos[0] = height/2-sizeOfInputArea/5+15+35;
-  yPos[1] = height/2+32;
-  yPos[2] = height/2+sizeOfInputArea/5+11;
   while (i < keySet.length) {
     if (i < firstRowLim) {
       float x = width/2-(10/2*sizeOfInputArea)/10+13;
       x += i*sizeOfInputArea/10;
       xPos.add(x);
-    }
-    else if (i < secondRowLim) {
+      yPos.add(height/2-sizeOfInputArea/5+15+35);
+    } else if (i < secondRowLim) {
       float x = width/2-(4*sizeOfInputArea)/10+2;
       x += (i-firstRowLim)*sizeOfInputArea/10;
       xPos.add(x);
-      
-    }
-    else {
+      yPos.add((float)height/2+32);
+    } else {
       float x = width/2-(4*sizeOfInputArea)/10+16;
       x += (i-secondRowLim)*sizeOfInputArea/10;
       xPos.add(x);
+      yPos.add(height/2+sizeOfInputArea/5+11);
     }
     i++;
-  }  
+  }
 }
 
 void gestureUI() {
   fill(255);
   rectMode(CENTER);
   for (int i = 0; i < xPos.size(); i++) {
-    if (i < firstRowLim) {
-      fill(255);
-      rect(xPos.get(i), yPos[0], sizeOfInputArea/13, sizeOfInputArea/13);
-      fill(0, 102, 153);
-      textSize(20);
-      text(keySet[i]+"", xPos.get(i), yPos[0]+5);
-    }
-    else if (i < secondRowLim) {
-      fill(255);
-      rect(xPos.get(i), yPos[1], sizeOfInputArea/13, sizeOfInputArea/13);
-      fill(0, 102, 153);
-      textSize(20);
-      text(keySet[i]+"", xPos.get(i), yPos[1]+5);
-    }
-    else {
-      fill(255);
-      rect(xPos.get(i), yPos[2], sizeOfInputArea/13, sizeOfInputArea/13);
-      fill(0, 102, 153);
-      textSize(20);
-      text(keySet[i]+"", xPos.get(i), yPos[2]+5);
-    }
+    fill(255);
+    rect(xPos.get(i), yPos.get(i), sizeOfInputArea/13, sizeOfInputArea/13);
+    fill(0, 102, 153);
+    textSize(20);
+    text(keySet[i]+"", xPos.get(i), yPos.get(i)+5);
   }
-    
+
   rectMode(CORNER);
-  
-  
-  //rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-  
-  //fill(0, 102, 153);
-  //textSize(20);
-  //text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15+40);
-  //text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-  //text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-  //text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-  //text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-  //text("y",width/2+13, height/2-sizeOfInputArea/5+15+40); 
-  //text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-  //text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+41); 
-  //text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-  //text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-  
-  //Middle Row
-  //fill(255);
-  //rect(width/2-sizeOfInputArea/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-  
-  //fill(0, 102, 153);
-  //text("f",width/2-sizeOfInputArea/10+2, height/2+37); 
-  //text("d",width/2-(2*sizeOfInputArea)/10+2, height/2+37); 
-  //text("s",width/2-(3*sizeOfInputArea)/10+2, height/2+37); 
-  //text("a",width/2-(4*sizeOfInputArea)/10+2, height/2+37); 
-  //text("g",width/2+2, height/2+36); 
-  //text("h",width/2+(sizeOfInputArea)/10+2, height/2+37); 
-  //text("j",width/2+(2*sizeOfInputArea)/10+2, height/2+36); 
-  //text("k",width/2+(3*sizeOfInputArea)/10+2, height/2+37); 
-  //text("l",width/2+(4*sizeOfInputArea)/10+2, height/2+37);  
-  
-  ////Bottom Row
-  //fill(255);
-  //rect(width/2-sizeOfInputArea/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2-(4*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);  
-  //rect(width/2+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  //rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);
-  //fill(255, 50, 0);
-  //rect(width/2+(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-  
-  //fill(0, 102, 153);
-  //text("v",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
-  //text("c",width/2-(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-  //text("x",width/2-(3*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-  //text("z",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
-  //text("b",width/2+16, height/2+sizeOfInputArea/5+16); 
-  //text("n",width/2+(sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-  //text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);
-  
+
+  //float circleRadius = 5;
   //for (int i = 0; i < keySet.length; i++) {
   //  fill(0);
   //  if (i < firstRowLim)
-  //    ellipse(xPos.get(i), yPos[0], 10, 10);
+  //    ellipse(xPos.get(i), yPos[0], circleRadius, circleRadius);
   //  else if (i < secondRowLim)
-  //    ellipse(xPos.get(i), yPos[1], 10, 10);
+  //    ellipse(xPos.get(i), yPos[1], circleRadius, circleRadius);
   //  else
-  //    ellipse(xPos.get(i), yPos[2], 10, 10);
+  //    ellipse(xPos.get(i), yPos[2], circleRadius, circleRadius);
   //}
 }
 
 void gestureClicked() {
+  if (entering == false)
+    entering = true;
+}
+
+void gestureMouseDragged() {
+  distDiff.add(dist(oldX.get(oldX.size()-1), oldY.get(oldX.size()-1), mouseX, mouseY));
+  oldX.add(mouseX);
+  oldY.add(mouseY);
+}
+
+boolean[] getIgnore(ArrayList<Float> distDiff) {
+  boolean[] ignore = new boolean[distDiff.size()];
+  boolean pausing = true;
+  int count = 1;
+  int i = 0;
+  for (i = 0; i < distDiff.size(); i++) {
+    ignore[i] = false;
+    if (distDiff.get(i) < minDiff) { //if supposed to pausing
+      if (pausing == true) // curr is pausing
+        ;
+      else { // curr is not pausing -> clean up
+        if (count < minGap) {
+          System.out.println(count);
+          for (int j = i-count; j < i; j++)
+            if (j >= 0)
+              ignore[j] = true;
+        }
+        pausing = true;
+      }
+    }
+    else { // if not supposed to pausing
+      if (pausing == false)
+        count++;
+      else { //start non-ause!
+        pausing = false;
+        count = 1;
+      }
+    }
+  }
+  //System.out.println(Arrays.toString(ignore));
+
+  return ignore;
+}
+
+ArrayList<Character> extractPosChars(ArrayList<Float> distDiff) {
+  ArrayList<Integer> posX = new ArrayList<Integer>();
+  ArrayList<Integer> posY = new ArrayList<Integer>();
+  ArrayList<Character> posChar = new ArrayList<Character>();
+  boolean[] ignore = getIgnore(distDiff);
+  System.out.println(distDiff);
+  System.out.println(Arrays.toString(ignore));
+  boolean pausing = false;
+  int count = 0;
+  int i = 0;
+  for (i = 0; i < distDiff.size(); i++) {
+    if (ignore[i] == false) {
+      if (distDiff.get(i) < minDiff) {
+        if (pausing == true) {
+          count++;
+        }
+        else {
+          pausing = true;
+          count = 1;
+        }
+      }
+      else {
+        if (pausing == true) {
+          if (count >= minPause) {
+            posX.add(oldX.get(i));
+            posY.add(oldY.get(i));
+            posChar.add(getClosestCharacter(oldX.get(i-count/2), oldY.get(i-count/2)));
+            pausing = false;
+            count = 0;
+          }
+        }
+      }
+    }
+  }
+  if (count >= minPause) {
+    posX.add(oldX.get(i));
+    posY.add(oldY.get(i));
+    posChar.add(getClosestCharacter(oldX.get(i-count/2), oldY.get(i-count/2)));
+  }
+  //System.out.println(posX);
+  //System.out.println(posY);
+  System.out.println(posChar);
+  return (posChar);
+}
+
+Character getClosestCharacter(int x, int y) {
+  char minChar = ' ';
+  float minDist = Float.MAX_VALUE;
+  for (int i = 0; i < keySet.length; i++) {
+    float dist = dist(x, y, xPos.get(i), yPos.get(i));
+    if (dist < minDist) {
+      minDist = dist;
+      minChar = keySet[i];
+    }
+  }
+  return minChar;
+}
+
+ArrayList<WordFreq> filterChar(ArrayList<WordFreq> wordList, char c, int index) {
+  ArrayList<WordFreq> filtered = new ArrayList<WordFreq>(wordList);
+  for (int i = 0; i < wordList.size(); i++) {
+    String word = wordList.get(i).word;
+    if (word.length() > index && word.charAt(index) == c)
+      filtered.add(wordList.get(i));
+  }
+  return filtered;
+}
+      
+
+ArrayList<String> getFreqWords(ArrayList<Set<Character>> chars) {
+  ArrayList<WordFreq> base = new ArrayList<WordFreq>();
+  return null;
   
 }
+
+String convertToString(ArrayList<Character> chars) {
+  StringBuilder str = new StringBuilder();
+  for (Character c : chars)
+    str.append(c.toString());
+  return str.toString();
+}
+
+
 
 ////========NineExtensionCode=======
 //ArrayList<ArrayList<Character>> nineKeys = new ArrayList<ArrayList<Character>>();
@@ -314,7 +386,7 @@ void gestureClicked() {
 //  nineKeys.add(new ArrayList<Character>(Arrays.asList('s','t','u')));
 //  nineKeys.add(new ArrayList<Character>(Arrays.asList('v','w','x')));
 //  nineKeys.add(new ArrayList<Character>(Arrays.asList('y','z')));
-  
+
 //  /*
 //  ninePos.add(new ArrayList<Integer>(Arrays.asList(3,4,1)));
 //  ninePos.add(new ArrayList<Integer>(Arrays.asList(0,4,2)));
@@ -326,14 +398,14 @@ void gestureClicked() {
 //  ninePos.add(new ArrayList<Integer>(Arrays.asList(6,4,8)));
 //  ninePos.add(new ArrayList<Integer>(Arrays.asList(7,5)));
 //  */
-    
+
 //  cornerX = width/2-sizeOfInputArea/2;
 //  cornerY = height/2-sizeOfInputArea/2+sizeOfInputArea/5;
 //  totalX = sizeOfInputArea;
 //  totalY = sizeOfInputArea*4/5;
 //  rows = 3;
 //  cols = 3;
-  
+
 //  for (int i = 0; i < rows; i++) {
 //    ArrayList<Integer> indices = new ArrayList<Integer>();
 //    for (int j = 0; j < cols; j++) {
@@ -345,7 +417,7 @@ void gestureClicked() {
 //  }
 //  ninePos.get(8).remove(0);
 //}
-  
+
 //void drawNineSquares(String[] text) {
 //  for (int i = 0; i < rows; i++) {
 //    for (int j = 0; j < cols; j++) {
@@ -364,7 +436,7 @@ void gestureClicked() {
 //}
 
 //void nineExtensionUI() {
-  
+
 //  rectMode(CORNER);
 //  fill(200);
 //  stroke(10);
@@ -373,7 +445,7 @@ void gestureClicked() {
 //  fill(0);
 //  text("SPACE", width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
 //  text("BACKSPACE", width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
-  
+
 //  String[] text = new String[nineKeys.size()];
 //  for (int i = 0; i < nineKeys.size(); i++) {
 //    String currText = "";
@@ -388,7 +460,7 @@ void gestureClicked() {
 //      text[indices.get(i)] = nineKeys.get(clicked).get(i).toString();
 //    }
 //  }
-  
+
 //  drawNineSquares(text);
 //}
 
@@ -418,7 +490,7 @@ void gestureClicked() {
 //    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
 //    return;
 //  }
-  
+
 //  if (clicked == -1) { //if none clicked currently
 //    clicked = getCurrClicked();
 //  }
@@ -435,12 +507,12 @@ void gestureClicked() {
 
 //========AUTOCOMPLETE CODE===========
 /* 
-   Usage: autoComplete(String prefix) returns an ArrayList of WordFreq (sorted by frequency)
-   where each WordFreq is a tuple of word (String) and freq (Long) 
-*/
+ Usage: autoComplete(String prefix) returns an ArrayList of WordFreq (sorted by frequency)
+ where each WordFreq is a tuple of word (String) and freq (Long) 
+ */
 String wordFreqSourceFile = "count_1w.txt";
 List<WordFreq> wordFreqBase;
-  
+
 class WordFreq {
   public final String word;
   public final long freq;
@@ -448,7 +520,7 @@ class WordFreq {
     this.word = word;
     this.freq = freq;
   }
-  
+
   public String toString() {
     return String.format("(%s, %d)", word, freq);
   }
@@ -457,29 +529,29 @@ class WordFreq {
 List<WordFreq> readWordFreqSource() {
   List<WordFreq> wordFreq = new ArrayList<WordFreq>();
   String[] lines = loadStrings(wordFreqSourceFile);
-  for (int i = 0 ; i < lines.length; i++) {
+  for (int i = 0; i < lines.length; i++) {
     String[] pieces = splitTokens(lines[i]); //CHANGED
     wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
   }
-  return wordFreq;  
+  return wordFreq;
 }
 
 /* PRINT ERROR CODE
-try {
-      wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
-    }
-    catch(Exception e) {
-      background(255);
-      fill(0);
-      StackTraceElement[] trace = e.getStackTrace();
-      for (int j = 0; j < trace.length; j++)
-        text(trace[j].toString(), 10, 250 + j*20);
-      text(Arrays.toString(pieces), 10, 400);
-      //text(pieces[1], 10, 400);
-      break;
-    }
-    */
-    
+ try {
+ wordFreq.add(new WordFreq(pieces[0], Long.parseLong(pieces[1])));
+ }
+ catch(Exception e) {
+ background(255);
+ fill(0);
+ StackTraceElement[] trace = e.getStackTrace();
+ for (int j = 0; j < trace.length; j++)
+ text(trace[j].toString(), 10, 250 + j*20);
+ text(Arrays.toString(pieces), 10, 400);
+ //text(pieces[1], 10, 400);
+ break;
+ }
+ */
+
 void printError(Exception e) {
   //try {
   //  CODE
@@ -488,7 +560,7 @@ void printError(Exception e) {
   //  printError(e);
   //  //break
   //}
-  
+
   background(255);
   fill(0);
   StackTraceElement[] trace = e.getStackTrace();
@@ -499,7 +571,7 @@ void printError(Exception e) {
 List<WordFreq> autoComplete(String prefix) {
   if (wordFreqBase == null)
     wordFreqBase = readWordFreqSource();
-    
+
   List<WordFreq> res = new ArrayList<WordFreq>();
   for (WordFreq wf : wordFreqBase) {
     if (wf.word.startsWith(prefix))
@@ -563,7 +635,7 @@ void nextTrial()
     float wpm = (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f); //FYI - 60K is number of milliseconds in minute
     float freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
     float penalty = max(errorsTotal-freebieErrors, 0) * .5f;
-    
+
     System.out.println("Raw WPM: " + wpm); //output
     System.out.println("Freebie errors: " + freebieErrors); //output
     System.out.println("Penalty: " + penalty);
@@ -578,8 +650,7 @@ void nextTrial()
   {
     System.out.println("Trials beginning! Starting timer..."); //output we're done
     startTime = millis(); //start the timer!
-  } 
-  else
+  } else
     currTrialNum++; //increment trial number
 
   lastTime = millis(); //record the time of when this trial ended
@@ -601,7 +672,7 @@ void drawWatch()
 }
 
 void scaffoldDrawInputUI() {
-  
+
   //my draw code
   fill(255, 0, 0); //red button
   rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
