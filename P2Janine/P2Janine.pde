@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 String[] phrases; //contains all of the phrases
 int totalTrialNum = 2; //the total number of phrases to be tested - set this low for testing. Might be ~10 for the real bakeoff!
@@ -17,9 +19,10 @@ final int DPIofYourDeviceScreen = 277; //200; //you will need to look up the DPI
 //http://en.wikipedia.org/wiki/List_of_displays_by_pixel_density
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
+float interval = 17;
 
 //J9 Variables
-int version = 3; 
+int version = 15; 
 //2 - Binary
 //3 - Cellphone
 int first = 0;
@@ -27,12 +30,23 @@ int second = 0;
 int third = 0;
 String buttonText;
 
-String[] alphabet = {"q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m"};
-float[] top = {width/2-(5*sizeOfInputArea)/10+13, width/2-(4*sizeOfInputArea)/10+13, width/2-(3*sizeOfInputArea)/10+13, width/2-(2*sizeOfInputArea)/10+13, width/2-sizeOfInputArea/10+15,
- width/2+13, width/2+(sizeOfInputArea)/10+13, width/2+(2*sizeOfInputArea)/10+13, width/2+(3*sizeOfInputArea)/10+13, width/2+(4*sizeOfInputArea)/10+13};
-float[] middle = {width/2-(4*sizeOfInputArea)/10+2,width/2-(3*sizeOfInputArea)/10+2,width/2-(2*sizeOfInputArea)/10+2,width/2-sizeOfInputArea/10+2,width/2+2,width/2+(sizeOfInputArea)/10+2,
-width/2+(2*sizeOfInputArea)/10+2,width/2+(3*sizeOfInputArea)/10+2,width/2+(4*sizeOfInputArea)/10+2};
-float[] bottom = {};
+float xborder=sizeOfInputArea/15;
+float yborder=sizeOfInputArea/12-10;
+
+String[] alphabet = {"q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m",""};
+float[] top = {514.5, 542.2, 569.9, 597.6, 625.3, 653.0, 680.7, 708.4, 736.1, 763.8};
+float[] middle = {531.2, 558.9, 586.60004, 614.3, 642.0, 669.7, 697.4, 725.1, 752.80005};
+float[] bottom = {545.2, 572.9, 600.60004, 628.3, 656.0, 683.7, 711.4, 739.1};
+ArrayList<Float> bigbut = new ArrayList<Float>();
+ArrayList<String> bigbutT = new ArrayList<String>();
+
+float[] top1 = {width/2-(5*sizeOfInputArea)/10+13, width/2-(4*sizeOfInputArea)/10+13, width/2-(3*sizeOfInputArea)/10+13, width/2-(2*sizeOfInputArea)/10+13, width/2-sizeOfInputArea/10+15,
+      width/2+13, width/2+(sizeOfInputArea)/10+13, width/2+(2*sizeOfInputArea)/10+13, width/2+(3*sizeOfInputArea)/10+13, width/2+(4*sizeOfInputArea)/10+13};
+float[] middle1 = {width/2-(4*sizeOfInputArea)/10+2,width/2-(3*sizeOfInputArea)/10+2,width/2-(2*sizeOfInputArea)/10+2,width/2-sizeOfInputArea/10+2,width/2+2,width/2+(sizeOfInputArea)/10+2,
+      width/2+(2*sizeOfInputArea)/10+2,width/2+(3*sizeOfInputArea)/10+2,width/2+(4*sizeOfInputArea)/10+2};
+float[] bottom1 = {width/2-(4*sizeOfInputArea)/10+16, width/2-(3*sizeOfInputArea)/10+16, width/2-(2*sizeOfInputArea)/10+16, width/2-sizeOfInputArea/10+16, 
+      width/2+16,width/2+(sizeOfInputArea)/10+16,width/2+(2*sizeOfInputArea)/10+16};
+      
 
 //Location Variables
 int textLocation = 1280/2;
@@ -50,8 +64,8 @@ void setup()
  
   orientation(LANDSCAPE); //can also be PORTRAIT - sets orientation on android device
   size(1280, 720); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
-  textFont(createFont("Arial", 24)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
-  noStroke(); //my code doesn't use any strokes
+  textFont(createFont("Arial", 20)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
+  noStroke(); //my code doesn't use any strokes'
 }
 
 //You can modify anything in here. This is just a basic implementation.
@@ -105,45 +119,7 @@ void draw()
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
     
-    //stroke(255);
-    /*if (version % 2 == 0) {
-      if (first + second >= 4) {
-        //Draw 8 Buttons
-        fill(255, 255, 0); //red button
-        rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        rect(width/2-sizeOfInputArea/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        rect(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        fill(0, 255, 255); //red button
-        rect(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        rect(width/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        rect(width/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        rect(width/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4); //draw left red button
-        
-        textAlign(CENTER);
-        fill(200);
-        setCur();
-        text(curSet[0], width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/8); //draw current letter
-        text(curSet[2], width/2-sizeOfInputArea/4, height/2-sizeOfInputArea/4+sizeOfInputArea/8);
-        text(curSet[4], width/2-sizeOfInputArea/4, height/2+sizeOfInputArea/8);
-        text(curSet[6], width/2-sizeOfInputArea/4, height/2+sizeOfInputArea/4+sizeOfInputArea/8);
-        text(curSet[1], width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/2+sizeOfInputArea/8);
-        text(curSet[3], width/2+sizeOfInputArea/4, height/2-sizeOfInputArea/4+sizeOfInputArea/8);
-        text(curSet[5], width/2+sizeOfInputArea/4, height/2+sizeOfInputArea/8);
-        text(curSet[7], width/2+sizeOfInputArea/4, height/2+sizeOfInputArea/4+sizeOfInputArea/8);
-      } else {
-      //my draw code
-        fill(255, 0, 0); //red button
-        rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-        fill(0, 255, 0); //green button
-        rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-        textAlign(CENTER);
-        fill(200);
-        setCur();
-        text(buttonText, width/2, height/2-sizeOfInputArea/4); //draw current letter
-      }
-    } else */if (version % 3 == 0) {
-      //10, 9, 7
+    if (version % 3 == 0) {
       //Top Row
       fill(255);
       rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
@@ -158,7 +134,6 @@ void draw()
       rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
       
       fill(0, 102, 153);
-      textSize(20);
       text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15+40);
       text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
       text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
@@ -215,27 +190,16 @@ void draw()
       text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
     }
   }
-}
-
-/*void setCur() {
-  if (first == 0) {
-    buttonText = "<- A-M N-Z ->";
-  } else if (second == 0) {
-    if (first == 1) {
-      buttonText = " <- A-F G-M ->";
-    } else {
-      buttonText = " <- N-S T-Z ->";
+  
+  if (version%5 == 0) {
+    for (int i = 0; i < bigbut.size()/2; i++) {
+      fill(200);
+      rect(bigbut.get(2*i+1)-xborder,bigbut.get(2*i)-yborder, sizeOfInputArea/6,sizeOfInputArea/6);
+      fill(0, 102, 153);
+      text(bigbutT.get(i),bigbut.get(2*i+1)+15-xborder, bigbut.get(2*i)+25-yborder); 
     }
-  } else if (first == 1 && second == 3) {
-    curSet = set1;
-  } else if (first == 1 && second == 4) {
-    curSet = set2;
-  } else if (first == 2 && second == 3) {
-    curSet = set3;
-  } else if (first == 2 && second == 4) {
-    curSet = set4;
   }
-}*/
+}
 
 //my terrible implementation you can entirely replace
 boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
@@ -243,102 +207,123 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
   return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
 }
 
-String[] closestButtons() {
-  String[] ret = {};
-  
+String closestButton() {
+  String ret="";
+  float cloose;
+  int j=0;
+  if (mouseY > height/2-sizeOfInputArea/5+30 && mouseY < height/2+10) {
+    System.out.println("Top");
+    cloose = abs(mouseX-top[0]);
+    for(int i = 1; i < 10; i++) {
+      if (cloose > abs(mouseX-top[i])) {
+        cloose = abs(mouseX-top[i]);
+        j=i;
+      }
+    }
+    ret = alphabet[j];
+  }
+  else if (mouseY > height/2+10 && mouseY < height/2+sizeOfInputArea/5-10) {
+    System.out.println("Middle");
+    cloose = abs(mouseX-top[0]);
+    for(int i = 1; i < 9; i++) {
+      if (cloose > abs(mouseX-middle[i])) {
+        cloose = abs(mouseX-middle[i]);
+        j=i;
+      }
+    }
+    ret = alphabet[10+j];
+  }
+  else if (mouseY > height/2+sizeOfInputArea/5-10 && mouseY < height/2+sizeOfInputArea/5+sizeOfInputArea/13+10) {
+    System.out.println("Bottom");
+    cloose = abs(mouseX-top[0]);
+    for(int i = 1; i < 8; i++) {
+      if (cloose > abs(mouseX-bottom[i])) {
+        cloose = abs(mouseX-bottom[i]);
+        j=i;
+      }
+    }
+    if (j == 8) {
+      currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
+      return "";
+    }
+    ret = alphabet[19+j];
+  }
+  else {
+    ret = " ";
+  }
   return ret; 
+}
+
+void closestButtons() {
+  if (mouseY > height/2-sizeOfInputArea/5+30 && mouseY < height/2+10) {
+    System.out.println("Top");
+    for(int i = 0; i < 10; i++) {
+      if (interval > abs(mouseX-top[i])) {
+        bigbut.add(height/2-sizeOfInputArea/5+40);
+        bigbut.add(top[i]);
+        bigbutT.add(alphabet[i]);
+      }
+    }
+  }
+  else if (mouseY > height/2+10 && mouseY < height/2+sizeOfInputArea/5-10) {
+    System.out.println("Middle");
+    for(int i = 0; i < 9; i++) {
+      if (interval > abs(mouseX-middle[i])) {
+        bigbut.add((float)height/2+20);
+        bigbut.add(middle[i]);
+        bigbutT.add(alphabet[i+10]);
+      }
+    }
+  }
+  else if (mouseY > height/2+sizeOfInputArea/5-10 && mouseY < height/2+sizeOfInputArea/5+sizeOfInputArea/13+10) {
+    System.out.println("Bottom");
+    for(int i = 0; i < 8; i++) {
+      if (interval > abs(mouseX-bottom[i])) {
+        bigbut.add(height/2+sizeOfInputArea/5);
+        bigbut.add(bottom[i]);
+        bigbutT.add(alphabet[i+19]);
+      }
+    }
+  }
+  else {
+    currentTyped += " ";
+  }
 }
 
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  /*if (first + second < 4) {
-    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
+  if (startTime > 0) {
+    //You are allowed to have a next button outside the 1" area
+    if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
     {
-      if (first == 0) {
-        first = 1;
-      } else if (second == 0) {
-        System.out.println("Made it Here");
-        second = 3;
+      nextTrial(); //if so, advance to next trial
+    } else {
+      System.out.println(mouseX);
+      if (version%5 == 0) {
+        closestButtons();
+      }
+      else {
+        currentTyped+=closestButton();
       }
     }
-  
-    if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-    {
-      if (first == 0) {
-        first = 2;
-      } else if (second == 0) {
-        System.out.println("Made it Here");
-        second = 4;
-      }
-    }
-    
-    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-    {
-      currentTyped+=" ";
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    
-  } else {
-    //8 Button Code
-    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      currentTyped+=curSet[0];
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      currentTyped+=curSet[2];
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    if (didMouseClick(width/2-sizeOfInputArea/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      currentTyped+=curSet[4];
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    if (didMouseClick(width/2-sizeOfInputArea/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      //currentTyped+=curSet[6];
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    if (didMouseClick(width/2, height/2-sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      currentTyped+=curSet[1];
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    if (didMouseClick(width/2, height/2-sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      currentTyped+=curSet[3];
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    if (didMouseClick(width/2, height/2, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      currentTyped+=curSet[5];
-      first = 0;
-      second = 0;
-      third = 0;
-    }
-    if (didMouseClick(width/2, height/2+sizeOfInputArea/4, sizeOfInputArea/2, sizeOfInputArea/4)) {
-      currentTyped+=curSet[7];
-      first = 0;
-      second = 0;
-      third = 0;      
-    }
-   
-  }*/
-
-  //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
-  {
-    nextTrial(); //if so, advance to next trial
   }
+}
+
+void mouseReleased()
+{
+  if (version % 5 == 0) {
+    for (int i = 0; i < bigbut.size()/2; i++) {
+      if (didMouseClick(bigbut.get(2*i+1)-xborder, bigbut.get(2*i)-yborder, sizeOfInputArea/6,sizeOfInputArea/6)) {
+        currentTyped+=bigbutT.get(i);
+        if (bigbutT.get(i)==""&&currentTyped.length()>0) {
+          currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
+        }
+      }
+    }
+  }
+  bigbut = new ArrayList<Float>();
+  bigbutT = new ArrayList<String>();
 }
 
 
@@ -414,9 +399,6 @@ void drawWatch()
   image(watch, 0, 0);
   popMatrix();
 }
-
-
-
 
 
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
