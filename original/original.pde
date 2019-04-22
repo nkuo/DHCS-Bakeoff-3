@@ -154,14 +154,32 @@ void mousePressedUI() {
   //scaffoldInputCheck();
   nineExtensionClicked();
   
+  String curr_word;
+  
   // GUESS THE NEXT LETTER
-  String[] words = currentTyped.split(" ");
-  String curr_word = words[words.length - 1];
-  if (currentTyped.length() >= 1 && currentTyped.charAt(currentTyped.length() - 1) == (char) 32) // space ascii 
+  if (currentTyped.length() >= 1) {
+    String[] words = currentTyped.split(" ");
+    curr_word = words[words.length - 1];
+    if (currentTyped.charAt(currentTyped.length() - 1) == (char) 32) // space ascii 
+      curr_word = "";
+  }
+  else {
     curr_word = "";
+  }
   next_letter_guess = letterGuess(curr_word);
   
   // GUESS THE THREE MOST LIKELY WORDS
+  /* 
+  
+  
+  
+  
+  fill in some bs here
+  
+  
+  
+  
+  */ 
 }
 
 void mouseClickedUI() {
@@ -204,9 +222,9 @@ void nineExtensionsSetup() {
   */
     
   cornerX = width/2-sizeOfInputArea/2;
-  cornerY = height/2-sizeOfInputArea/2+sizeOfInputArea/5;
+  cornerY = height/2-sizeOfInputArea/2 + 2 * topbuff;
   totalX = sizeOfInputArea;
-  totalY = sizeOfInputArea*4/5;
+  totalY = sizeOfInputArea*3/4;
   rows = 3;
   cols = 3;
   
@@ -226,9 +244,9 @@ void drawNineSquares(String[] text) {
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
       float x = cornerX+totalX/cols*j;
-      float y = cornerY+totalY/rows*i;
+      float y = cornerY+totalY/(rows)*i;
       float w = totalX/cols;
-      float h = totalY/rows;
+      float h = totalY/(rows);
       fill(255);
       rect(x, y, w, h);
       int index = i*rows+j;
@@ -287,13 +305,15 @@ int getCurrClicked() {
   int clicked = -1;
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < cols; j++) {
-      float x = cornerX+totalX/cols*j;
-      float y = cornerY+totalY/rows*i;
+      float x = cornerX+(totalX/cols)*j;
+      float y = cornerY+(totalY/rows)*i;
       float w = totalX/cols;
-      float h = totalY/rows;
-      int index = i*rows+j;
+      float h = totalY/(rows);
+      int index = (i*rows)+j;
       if (didMouseClick(x,y,w,h))
+        print("here");
         clicked = index;
+        return clicked;
     }
   }
   return clicked;
@@ -315,19 +335,19 @@ void nineExtensionClicked() {
     return;
   }
   
-  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff)) { //space
-    currentTyped += " ";
+   // AUTOCOMPLETE WORDS
+  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) { //space
+    currentTyped += word_guesses[0];
     return;
   }
   
-  // AUTOCOMPLETE WORDS
-  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff) && currentTyped.length() > 0) { //backspace
-    currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length() > 0) { //backspace
+    currentTyped += word_guesses[1];
     return;
   }
   
-  if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2+topbuff, sizeOfInputArea/3, topbuff)) {
-    currentTyped += next_letter_guess;
+  if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) {
+    currentTyped += word_guesses[2];
     return;
   }
   
