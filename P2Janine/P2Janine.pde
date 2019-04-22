@@ -71,133 +71,140 @@ void setup()
 //You can modify anything in here. This is just a basic implementation.
 void draw()
 {
-  background(255); //clear background
-  drawWatch(); //draw watch background
-  fill(100);
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
-
-  if (finishTime!=0)
-  {
-    fill(128);
-    textAlign(CENTER);
-    text("Finished", 280, 150);
-    return;
-  }
-
-  if (startTime==0 & !mousePressed)
-  {
-    fill(128);
-    textAlign(CENTER);
-    text("Click to start time!", 280, 150); //display this messsage until the user clicks!
-  }
-
-  if (startTime==0 & mousePressed)
-  {
-    nextTrial(); //start the trials!
-  }
-
-  if (startTime!=0)
-  {
-    noStroke();
-    rectMode(CENTER);
-    fill(255);
-    stroke(10);
-    rect(textLocation, 90, 600, 150);
-    noStroke();
-    rectMode(CORNER);
-    //feel free to change the size and position of the target/entered phrases and next button 
-    textAlign(CENTER);
-    fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, textLocation, 50); //draw the trial count
-    fill(128);
-    text("Target:   " + currentPhrase, textLocation, 100); //draw the target string
-    text("Entered:  " + currentTyped +"|", textLocation, 140); //draw what the user has entered thus far 
-
-    //draw very basic next button
-    fill(0, 200, 0);
-    rect(600, 600, 200, 200); //draw next button
-    fill(255);
-    text("NEXT > ", 650, 650); //draw next label
+  if (currTrialNum != totalTrialNum) {
     
-    if (version % 3 == 0) {
-      //Top Row
-      fill(255);
-      rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-      
-      fill(0, 102, 153);
-      text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15+40);
-      text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      text("y",width/2+13, height/2-sizeOfInputArea/5+15+40); 
-      text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+41); 
-      text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-      
-      //Middle Row
-      fill(255);
-      rect(width/2-sizeOfInputArea/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-      
-      fill(0, 102, 153);
-      text("f",width/2-sizeOfInputArea/10+2, height/2+37); 
-      text("d",width/2-(2*sizeOfInputArea)/10+2, height/2+37); 
-      text("s",width/2-(3*sizeOfInputArea)/10+2, height/2+37); 
-      text("a",width/2-(4*sizeOfInputArea)/10+2, height/2+37); 
-      text("g",width/2+2, height/2+36); 
-      text("h",width/2+(sizeOfInputArea)/10+2, height/2+37); 
-      text("j",width/2+(2*sizeOfInputArea)/10+2, height/2+36); 
-      text("k",width/2+(3*sizeOfInputArea)/10+2, height/2+37); 
-      text("l",width/2+(4*sizeOfInputArea)/10+2, height/2+37);  
-      
-      //Bottom Row
-      fill(255);
-      rect(width/2-sizeOfInputArea/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2-(4*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);  
-      rect(width/2+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-      rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);
-      fill(255, 50, 0);
-      rect(width/2+(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
-      
-      fill(0, 102, 153);
-      text("v",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
-      text("c",width/2-(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-      text("x",width/2-(3*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-      text("z",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
-      text("b",width/2+16, height/2+sizeOfInputArea/5+16); 
-      text("n",width/2+(sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-      text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-    }
-  }
+    background(255); //clear background
+    drawWatch(); //draw watch background
+    fill(100);
+    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
-  if (version%5 == 0) {
-    for (int i = 0; i < bigbut.size()/2; i++) {
-      fill(200);
-      rect(bigbut.get(2*i+1)-xborder,bigbut.get(2*i)-yborder, sizeOfInputArea/6,sizeOfInputArea/6);
-      fill(0, 102, 153);
-      text(bigbutT.get(i),bigbut.get(2*i+1)+15-xborder, bigbut.get(2*i)+25-yborder); 
+    if (finishTime!=0)
+    {
+      fill(128);
+      textAlign(CENTER);
+      text("Finished", 280, 150);
+      return;
     }
+  
+    if (startTime==0 & !mousePressed)
+    {
+      fill(128);
+      textAlign(CENTER);
+      text("Click to start time!", 280, 150); //display this messsage until the user clicks!
+    }
+  
+    if (startTime==0 & mousePressed)
+    {
+      nextTrial(); //start the trials!
+    }
+  
+    if (startTime!=0)
+    {
+      noStroke();
+      rectMode(CENTER);
+      fill(255);
+      stroke(10);
+      rect(textLocation, 90, 600, 150);
+      noStroke();
+      rectMode(CORNER);
+      //feel free to change the size and position of the target/entered phrases and next button 
+      textAlign(CENTER);
+      fill(128);
+      text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, textLocation, 50); //draw the trial count
+      fill(128);
+      text("Target:   " + currentPhrase, textLocation, 100); //draw the target string
+      text("Entered:  " + currentTyped +"|", textLocation, 140); //draw what the user has entered thus far 
+  
+      //draw very basic next button
+      fill(0, 200, 0);
+      rect(600, 600, 200, 200); //draw next button
+      fill(255);
+      text("NEXT > ", 650, 650); //draw next label
+      
+      if (version % 3 == 0) {
+        //Top Row
+        fill(255);
+        rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        
+        fill(0, 102, 153);
+        text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15+40);
+        text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        text("y",width/2+13, height/2-sizeOfInputArea/5+15+40); 
+        text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+41); 
+        text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        
+        //Middle Row
+        fill(255);
+        rect(width/2-sizeOfInputArea/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        
+        fill(0, 102, 153);
+        text("f",width/2-sizeOfInputArea/10+2, height/2+37); 
+        text("d",width/2-(2*sizeOfInputArea)/10+2, height/2+37); 
+        text("s",width/2-(3*sizeOfInputArea)/10+2, height/2+37); 
+        text("a",width/2-(4*sizeOfInputArea)/10+2, height/2+37); 
+        text("g",width/2+2, height/2+36); 
+        text("h",width/2+(sizeOfInputArea)/10+2, height/2+37); 
+        text("j",width/2+(2*sizeOfInputArea)/10+2, height/2+36); 
+        text("k",width/2+(3*sizeOfInputArea)/10+2, height/2+37); 
+        text("l",width/2+(4*sizeOfInputArea)/10+2, height/2+37);  
+        
+        //Bottom Row
+        fill(255);
+        rect(width/2-sizeOfInputArea/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(4*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);  
+        rect(width/2+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);
+        fill(255, 50, 0);
+        rect(width/2+(3*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
+        
+        fill(0, 102, 153);
+        text("v",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
+        text("c",width/2-(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+        text("x",width/2-(3*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+        text("z",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
+        text("b",width/2+16, height/2+sizeOfInputArea/5+16); 
+        text("n",width/2+(sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+        text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+      }
+    }
+    
+    if (version%5 == 0) {
+      for (int i = 0; i < bigbut.size()/2; i++) {
+        fill(200);
+        rect(bigbut.get(2*i+1)-xborder,bigbut.get(2*i)-yborder, sizeOfInputArea/6,sizeOfInputArea/6);
+        fill(0, 102, 153);
+        text(bigbutT.get(i),bigbut.get(2*i+1)+15-xborder, bigbut.get(2*i)+25-yborder); 
+      }
+    }
+    
+  }
+  else {
+    drawWatch();
   }
 }
 
@@ -389,16 +396,6 @@ void nextTrial()
 }
 
 
-void drawWatch()
-{
-  float watchscale = DPIofYourDeviceScreen/138.0;
-  pushMatrix();
-  translate(width/2, height/2);
-  scale(watchscale);
-  imageMode(CENTER);
-  image(watch, 0, 0);
-  popMatrix();
-}
 
 
 //=========SHOULD NOT NEED TO TOUCH THIS METHOD AT ALL!==============
