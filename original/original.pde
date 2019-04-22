@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.Long;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 /*
 TODOS:
@@ -140,11 +141,16 @@ void mousePressed()
 void mouseReleased() {
   //JAVA ONLY
   entering = false;
-  currentTyped += convertToString(extractPosChars(distDiff));
+  System.out.println(distDiff);
+  System.out.println(extractPosChars(distDiff));
+  ArrayList<String> words = getFreqWords(extractPosChars(distDiff));
+  System.out.println(words.subList(0,min(10,words.size())));
+  //currentTyped += convertToString(extractPosChars(distDiff));
 }
 
 void mouseClicked() {
   mouseClickedUI();
+  getClosestCharacters(mouseX, mouseY);
   //fill(0);
   //text(String.format("%d, %d", mouseX, mouseY), 50, 100);
 }
@@ -162,6 +168,7 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 void drawInputUI() {
   //scaffoldDrawInputUI();
   gestureUI();
+  mouseDraggedUI();
 }
 
 void mousePressedUI() {
@@ -190,9 +197,10 @@ ArrayList<Float> distDiff = new ArrayList<Float>();
 ArrayList<Float> possibleX = new ArrayList<Float>();
 ArrayList<Float> possibleY = new ArrayList<Float>();
 
-int minPause = 3;
-int minGap = 3;
-float minDiff = 0.5;
+int minPause = 2;     //for analyzing path: minimum time frames of pause/stop
+int minGap = 3;       //minimim time frames between pauses
+float minDiff = 2;//7;//0.5;  //minimum diff in pos to count as pause
+float minDist = 25;   //for determining nearest character
 
 void gestureSetup() {
   int i = 0;
@@ -265,7 +273,7 @@ boolean[] getIgnore(ArrayList<Float> distDiff) {
         ;
       else { // curr is not pausing -> clean up
         if (count < minGap) {
-          System.out.println(count);
+          //System.out.println(count);
           for (int j = i-count; j < i; j++)
             if (j >= 0)
               ignore[j] = true;
@@ -287,13 +295,13 @@ boolean[] getIgnore(ArrayList<Float> distDiff) {
   return ignore;
 }
 
-ArrayList<Character> extractPosChars(ArrayList<Float> distDiff) {
+ArrayList<Set<Character>> extractPosChars(ArrayList<Float> distDiff) {
   ArrayList<Integer> posX = new ArrayList<Integer>();
   ArrayList<Integer> posY = new ArrayList<Integer>();
-  ArrayList<Character> posChar = new ArrayList<Character>();
+  ArrayList<Set<Character>> posChar = new ArrayList<Set<Character>>();
   boolean[] ignore = getIgnore(distDiff);
-  System.out.println(distDiff);
-  System.out.println(Arrays.toString(ignore));
+  //System.out.println(distDiff);
+  //System.out.println(Arrays.toString(ignore));
   boolean pausing = false;
   int count = 0;
   int i = 0;
@@ -313,7 +321,7 @@ ArrayList<Character> extractPosChars(ArrayList<Float> distDiff) {
           if (count >= minPause) {
             posX.add(oldX.get(i));
             posY.add(oldY.get(i));
-            posChar.add(getClosestCharacter(oldX.get(i-count/2), oldY.get(i-count/2)));
+            posChar.add(getClosestCharacters(oldX.get(i-count/2), oldY.get(i-count/2)));
             pausing = false;
             count = 0;
           }
@@ -324,29 +332,49 @@ ArrayList<Character> extractPosChars(ArrayList<Float> distDiff) {
   if (count >= minPause) {
     posX.add(oldX.get(i));
     posY.add(oldY.get(i));
-    posChar.add(getClosestCharacter(oldX.get(i-count/2), oldY.get(i-count/2)));
+    posChar.add(getClosestCharacters(oldX.get(i-count/2), oldY.get(i-count/2)));
   }
   //System.out.println(posX);
   //System.out.println(posY);
-  System.out.println(posChar);
+  //System.out.println(posChar);
   return (posChar);
 }
 
-Character getClosestCharacter(int x, int y) {
+Set<Character> getClosestCharacters(int x, int y) {
+  //float[] dist = new float[keySet.length];
+  //Set<Character> chars = new LinkedHashSet<Character>();
+  //float min = MAX_FLOAT;
+  //for (int i = 0; i < keySet.length; i++) {
+  //  dist[i] = dist(x, y, xPos.get(i), yPos.get(i));
+  //  if (dist[i] < min)
+  //    min = dist[i];
+  //}
+  //for (int i = 0; i < dist.length; i++) {
+  //  dist[i] -= min;
+  //}
+  
+  //return chars;
+  
+  float[] dist = new float[keySet.length];
+  float min = MAX_FLOAT;
   char minChar = ' ';
-  float minDist = Float.MAX_VALUE;
+  Set<Character> chars = new LinkedHashSet<Character>();
   for (int i = 0; i < keySet.length; i++) {
-    float dist = dist(x, y, xPos.get(i), yPos.get(i));
-    if (dist < minDist) {
-      minDist = dist;
+    dist[i] = dist(x, y, xPos.get(i), yPos.get(i));
+    if (dist[i] < minDist)
+      chars.add(keySet[i]);     
+    if (dist[i] < min) {
+      min = dist[i];
       minChar = keySet[i];
     }
   }
-  return minChar;
+  if (chars.size() == 0)
+    chars.add(minChar);
+  return chars;
 }
 
-ArrayList<WordFreq> filterChar(ArrayList<WordFreq> wordList, char c, int index) {
-  ArrayList<WordFreq> filtered = new ArrayList<WordFreq>(wordList);
+ArrayList<WordFreq> filterBy(ArrayList<WordFreq> wordList, char c, int index) {
+  ArrayList<WordFreq> filtered = new ArrayList<WordFreq>();
   for (int i = 0; i < wordList.size(); i++) {
     String word = wordList.get(i).word;
     if (word.length() > index && word.charAt(index) == c)
@@ -357,16 +385,27 @@ ArrayList<WordFreq> filterChar(ArrayList<WordFreq> wordList, char c, int index) 
       
 
 ArrayList<String> getFreqWords(ArrayList<Set<Character>> chars) {
-  ArrayList<WordFreq> base = new ArrayList<WordFreq>();
-  return null;
-  
+  ArrayList<WordFreq> base = new ArrayList<WordFreq>(wordFreqBase);
+  ArrayList<WordFreq> tmp;
+  for (int i = 0; i < chars.size(); i++) {
+    tmp = new ArrayList<WordFreq>();
+    for (Character c : chars.get(i)) {
+      //System.out.println(c + " " + i);
+      //System.out.println(filterBy(base, c, i).subList(0, 10));
+      tmp.addAll(filterBy(base, c, i));
+    }
+    base = new ArrayList<WordFreq>(tmp);
+  }  
+  ArrayList<String> res = new ArrayList<String>();
+  for (WordFreq freq : base) {
+    res.add(freq.word);
+  }
+  return res;
 }
 
-String convertToString(ArrayList<Character> chars) {
+String convertToString(ArrayList<Set<Character>> chars) {
   StringBuilder str = new StringBuilder();
-  for (Character c : chars)
-    str.append(c.toString());
-  return str.toString();
+  return "";  
 }
 
 
