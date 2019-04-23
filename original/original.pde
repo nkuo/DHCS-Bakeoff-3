@@ -31,6 +31,7 @@ char next_letter_guess;
 // ===== NEXT WORD CODE =====
 String[] word_guesses = {"", "", ""};
 float topbuff = sizeOfInputArea/8;
+String curr_word;
 
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
@@ -154,10 +155,8 @@ void mousePressedUI() {
   //scaffoldInputCheck();
   nineExtensionClicked();
   
-  String curr_word;
-  
   // GUESS THE NEXT LETTER
-  if (currentTyped.length() >= 1) {
+  if (currentTyped.length() >= 1 && currentTyped.charAt(0) != (char) 32) { // weird edgecase
     String[] words = currentTyped.split(" ");
     curr_word = words[words.length - 1];
     if (currentTyped.charAt(currentTyped.length() - 1) == (char) 32) // space ascii 
@@ -167,19 +166,13 @@ void mousePressedUI() {
     curr_word = "";
   }
   next_letter_guess = letterGuess(curr_word);
+  println(curr_word);
+  // NEXT WORD GUESS
+  List<WordFreq> words = autoComplete(curr_word);
+  word_guesses[0] = words.get(0).word;
+  word_guesses[1] = words.get(1).word;
+  word_guesses[2] = words.get(2).word;
   
-  // GUESS THE THREE MOST LIKELY WORDS
-  /* 
-  
-  
-  
-  
-  fill in some bs here
-  
-  
-  
-  
-  */ 
 }
 
 void mouseClickedUI() {
@@ -238,6 +231,7 @@ void nineExtensionsSetup() {
     }
   }
   ninePos.get(8).remove(0);
+  //print(ninePos);
 }
   
 void drawNineSquares(String[] text) {
@@ -310,10 +304,10 @@ int getCurrClicked() {
       float w = totalX/cols;
       float h = totalY/(rows);
       int index = (i*rows)+j;
-      if (didMouseClick(x,y,w,h))
-        print("here");
+      if (didMouseClick(x,y,w,h)) {
         clicked = index;
         return clicked;
+      }
     }
   }
   return clicked;
@@ -336,18 +330,18 @@ void nineExtensionClicked() {
   }
   
    // AUTOCOMPLETE WORDS
-  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) { //space
-    currentTyped += word_guesses[0];
+  if (didMouseClick(width/2-(1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) {
+    currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()) + word_guesses[0];
     return;
   }
   
-  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length() > 0) { //backspace
-    currentTyped += word_guesses[1];
+  if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length() > 0) { 
+    currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()) + word_guesses[1];
     return;
   }
   
   if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) {
-    currentTyped += word_guesses[2];
+    currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()) + word_guesses[2];
     return;
   }
   
