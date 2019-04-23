@@ -30,8 +30,9 @@ int second = 0;
 int third = 0;
 String buttonText;
 
-float xborder=sizeOfInputArea/15;
+float xborder=sizeOfInputArea/15+5;
 float yborder=sizeOfInputArea/12-10;
+int over = 2;
 
 String[] alphabet = {"q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","z","x","c","v","b","n","m",""};
 float[] top = {514.5, 542.2, 569.9, 597.6, 625.3, 653.0, 680.7, 708.4, 736.1, 763.8};
@@ -124,51 +125,51 @@ void draw()
       if (version % 3 == 0) {
         //Top Row
         fill(255);
-        rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+40, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(5*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(3*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(4*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
         
         fill(0, 102, 153);
-        text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15+40);
-        text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-        text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-        text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-        text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-        text("y",width/2+13, height/2-sizeOfInputArea/5+15+40); 
-        text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-        text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+41); 
-        text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
-        text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+40); 
+        text("t",width/2-sizeOfInputArea/10+13, height/2-sizeOfInputArea/5+15+20);
+        text("r",width/2-(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+20); 
+        text("e",width/2-(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+20); 
+        text("w",width/2-(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+20); 
+        text("q",width/2-(5*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+20); 
+        text("y",width/2+13, height/2-sizeOfInputArea/5+15+20); 
+        text("u",width/2+(sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+20); 
+        text("i",width/2+(2*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+21); 
+        text("o",width/2+(3*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+20); 
+        text("p",width/2+(4*sizeOfInputArea)/10+13, height/2-sizeOfInputArea/5+15+20); 
         
         //Middle Row
         fill(255);
-        rect(width/2-sizeOfInputArea/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(2*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(3*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
-        rect(width/2+(4*sizeOfInputArea)/10-8, height/2+20, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-sizeOfInputArea/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(2*sizeOfInputArea)/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(3*sizeOfInputArea)/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-(4*sizeOfInputArea)/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(sizeOfInputArea)/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(2*sizeOfInputArea)/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(3*sizeOfInputArea)/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
+        rect(width/2+(4*sizeOfInputArea)/10-8, height/2+10, sizeOfInputArea/13, sizeOfInputArea/13); 
         
         fill(0, 102, 153);
-        text("f",width/2-sizeOfInputArea/10+2, height/2+37); 
-        text("d",width/2-(2*sizeOfInputArea)/10+2, height/2+37); 
-        text("s",width/2-(3*sizeOfInputArea)/10+2, height/2+37); 
-        text("a",width/2-(4*sizeOfInputArea)/10+2, height/2+37); 
-        text("g",width/2+2, height/2+36); 
-        text("h",width/2+(sizeOfInputArea)/10+2, height/2+37); 
-        text("j",width/2+(2*sizeOfInputArea)/10+2, height/2+36); 
-        text("k",width/2+(3*sizeOfInputArea)/10+2, height/2+37); 
-        text("l",width/2+(4*sizeOfInputArea)/10+2, height/2+37);  
+        text("f",width/2-sizeOfInputArea/10+2, height/2+27); 
+        text("d",width/2-(2*sizeOfInputArea)/10+2, height/2+27); 
+        text("s",width/2-(3*sizeOfInputArea)/10+2, height/2+27); 
+        text("a",width/2-(4*sizeOfInputArea)/10+2, height/2+27); 
+        text("g",width/2+2, height/2+26); 
+        text("h",width/2+(sizeOfInputArea)/10+2, height/2+27); 
+        text("j",width/2+(2*sizeOfInputArea)/10+2, height/2+26); 
+        text("k",width/2+(3*sizeOfInputArea)/10+2, height/2+27); 
+        text("l",width/2+(4*sizeOfInputArea)/10+2, height/2+27);  
         
         //Bottom Row
         fill(255);
@@ -194,11 +195,27 @@ void draw()
     }
     
     if (version%5 == 0) {
-      for (int i = 0; i < bigbut.size()/2; i++) {
+      stroke(10);
+      if (bigbut.size() > 3) {
         fill(200);
-        rect(bigbut.get(2*i+1)-xborder,bigbut.get(2*i)-yborder, sizeOfInputArea/6,sizeOfInputArea/6);
+        rect(bigbut.get(1)-xborder-10,bigbut.get(0)-yborder, sizeOfInputArea/6,sizeOfInputArea/6);
+        rect(bigbut.get(3)-xborder+10,bigbut.get(2)-yborder, sizeOfInputArea/6,sizeOfInputArea/6);
         fill(0, 102, 153);
-        text(bigbutT.get(i),bigbut.get(2*i+1)+15-xborder, bigbut.get(2*i)+25-yborder); 
+        text(bigbutT.get(0),bigbut.get(1)+12-xborder, bigbut.get(0)+28-yborder); 
+        text(bigbutT.get(1),bigbut.get(3)+32-xborder, bigbut.get(2)+28-yborder); 
+        
+        if (didMouseClick(bigbut.get(1)-xborder-10,bigbut.get(0)-yborder, sizeOfInputArea/6,sizeOfInputArea/6)) {
+          fill(250);
+        } else {fill(120);}
+        rect(width/2-sizeOfInputArea/6,height/2-110,sizeOfInputArea/6,sizeOfInputArea/6);
+        if (didMouseClick(bigbut.get(3)-xborder+10,bigbut.get(2)-yborder, sizeOfInputArea/6,sizeOfInputArea/6)) {
+          fill(250);
+        } else { fill(120); }
+        rect(width/2,height/2-110,sizeOfInputArea/6,sizeOfInputArea/6);
+        
+        fill(0, 102, 153);
+        text(bigbutT.get(0),width/2-sizeOfInputArea/6+22,height/2-110+28); 
+        text(bigbutT.get(1),width/2+22,height/2-110+28); 
       }
     }
     
@@ -218,8 +235,8 @@ String closestButton() {
   String ret="";
   float cloose;
   int j=0;
-  if (mouseY > height/2-sizeOfInputArea/5+30 && mouseY < height/2+10) {
-    System.out.println("Top");
+  if (mouseY > height/2-sizeOfInputArea/5+8 && mouseY < height/2-2) {
+    //System.out.println("Top");
     cloose = abs(mouseX-top[0]);
     for(int i = 1; i < 10; i++) {
       if (cloose > abs(mouseX-top[i])) {
@@ -229,8 +246,8 @@ String closestButton() {
     }
     ret = alphabet[j];
   }
-  else if (mouseY > height/2+10 && mouseY < height/2+sizeOfInputArea/5-10) {
-    System.out.println("Middle");
+  else if (mouseY > height/2-2 && mouseY < height/2+43.407) {
+    //System.out.println("Middle");
     cloose = abs(mouseX-top[0]);
     for(int i = 1; i < 9; i++) {
       if (cloose > abs(mouseX-middle[i])) {
@@ -240,8 +257,8 @@ String closestButton() {
     }
     ret = alphabet[10+j];
   }
-  else if (mouseY > height/2+sizeOfInputArea/5-10 && mouseY < height/2+sizeOfInputArea/5+sizeOfInputArea/13+10) {
-    System.out.println("Bottom");
+  else if (mouseY > height/2+43.407 && mouseY < height/2+sizeOfInputArea/5+sizeOfInputArea/13+12) {
+    //System.out.println("Bottom");
     cloose = abs(mouseX-top[0]);
     for(int i = 1; i < 8; i++) {
       if (cloose > abs(mouseX-bottom[i])) {
@@ -262,31 +279,33 @@ String closestButton() {
 }
 
 void closestButtons() {
-  if (mouseY > height/2-sizeOfInputArea/5+30 && mouseY < height/2+10) {
-    System.out.println("Top");
+  //sizeofInputArea/5 = 55.4
+  //sizeOfInputArea/13 = 21.307
+  if (mouseY > height/2-sizeOfInputArea/5+8 && mouseY < height/2-2) {
+    //System.out.println("Top");
     for(int i = 0; i < 10; i++) {
       if (interval > abs(mouseX-top[i])) {
-        bigbut.add(height/2-sizeOfInputArea/5+40);
+        bigbut.add(height/2-sizeOfInputArea/5+18);
         bigbut.add(top[i]);
         bigbutT.add(alphabet[i]);
       }
     }
   }
-  else if (mouseY > height/2+10 && mouseY < height/2+sizeOfInputArea/5-10) {
-    System.out.println("Middle");
+  else if (mouseY >= height/2-2 && mouseY < height/2+43.407) {
+    //System.out.println("Middle");
     for(int i = 0; i < 9; i++) {
       if (interval > abs(mouseX-middle[i])) {
-        bigbut.add((float)height/2+20);
+        bigbut.add((float)height/2+8);
         bigbut.add(middle[i]);
         bigbutT.add(alphabet[i+10]);
       }
     }
   }
-  else if (mouseY > height/2+sizeOfInputArea/5-10 && mouseY < height/2+sizeOfInputArea/5+sizeOfInputArea/13+10) {
-    System.out.println("Bottom");
+  else if (mouseY >= height/2+43.407 && mouseY < height/2+sizeOfInputArea/5+sizeOfInputArea/13+12) {
+    //System.out.println("Bottom");
     for(int i = 0; i < 8; i++) {
       if (interval > abs(mouseX-bottom[i])) {
-        bigbut.add(height/2+sizeOfInputArea/5);
+        bigbut.add(height/2+53.407);
         bigbut.add(bottom[i]);
         bigbutT.add(alphabet[i+19]);
       }
@@ -306,7 +325,7 @@ void mousePressed()
     {
       nextTrial(); //if so, advance to next trial
     } else {
-      System.out.println(mouseX);
+      //System.out.println(mouseX);
       if (version%5 == 0) {
         closestButtons();
       }
@@ -320,10 +339,20 @@ void mousePressed()
 void mouseReleased()
 {
   if (version % 5 == 0) {
-    for (int i = 0; i < bigbut.size()/2; i++) {
-      if (didMouseClick(bigbut.get(2*i+1)-xborder, bigbut.get(2*i)-yborder, sizeOfInputArea/6,sizeOfInputArea/6)) {
-        currentTyped+=bigbutT.get(i);
-        if (bigbutT.get(i)==""&&currentTyped.length()>0) {
+    if (bigbut.size() == 2) {
+      if (didMouseClick(bigbut.get(1)-xborder, bigbut.get(0)-yborder, sizeOfInputArea/6,sizeOfInputArea/6)) {
+        currentTyped+=bigbutT.get(0);
+        if (bigbutT.get(0)=="" && currentTyped.length()>0) {
+          currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
+        }
+      }
+    }
+    else if (bigbut.size() ==4){
+      if (didMouseClick(bigbut.get(1)-xborder-10,bigbut.get(0)-yborder, sizeOfInputArea/6,sizeOfInputArea/6)) {
+        currentTyped+=bigbutT.get(0);
+      } else if (didMouseClick(bigbut.get(3)-xborder+10,bigbut.get(2)-yborder, sizeOfInputArea/6,sizeOfInputArea/6)){
+        currentTyped+=bigbutT.get(1);
+        if (bigbutT.get(1)=="" && currentTyped.length()>0) {
           currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
         }
       }
