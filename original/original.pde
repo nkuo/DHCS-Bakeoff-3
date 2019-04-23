@@ -198,8 +198,8 @@ ArrayList<Float> possibleX = new ArrayList<Float>();
 ArrayList<Float> possibleY = new ArrayList<Float>();
 
 int minPause = 2;     //for analyzing path: minimum time frames of pause/stop
-int minGap = 3;       //minimim time frames between pauses
-float minDiff = 2;//7;//0.5;  //minimum diff in pos to count as pause
+int minGap = 1;       //minimim time frames between pauses
+float minDiff = 7;//0.5;  //minimum diff in pos to count as pause
 float minDist = 25;   //for determining nearest character
 
 void gestureSetup() {
