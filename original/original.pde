@@ -122,14 +122,6 @@ void mousePressed()
 {
   mousePressedUI();
 
-  //JAVA ONLY
-  entering = true;
-  oldX = new ArrayList<Integer>();
-  oldY = new ArrayList<Integer>();
-  distDiff = new ArrayList<Float>();
-  oldX.add(mouseX);
-  oldY.add(mouseY);
-
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
   {
@@ -139,20 +131,16 @@ void mousePressed()
 }
 
 void mouseReleased() {
-  //JAVA ONLY
-  entering = false;
-  System.out.println(distDiff);
-  System.out.println(extractPosChars(distDiff));
-  ArrayList<String> words = getFreqWords(extractPosChars(distDiff));
-  System.out.println(words.subList(0,min(10,words.size())));
-  //currentTyped += convertToString(extractPosChars(distDiff));
+  gestureReleased();
 }
 
 void mouseClicked() {
   mouseClickedUI();
-  getClosestCharacters(mouseX, mouseY);
+  //getClosestCharacters(mouseX, mouseY);
   //fill(0);
   //text(String.format("%d, %d", mouseX, mouseY), 50, 100);
+  print(String.format("%d, %d", mouseX, mouseY));
+
 }
 
 
@@ -202,6 +190,12 @@ int minGap = 1;       //minimim time frames between pauses
 float minDiff = 7;//0.5;  //minimum diff in pos to count as pause
 float minDist = 25;   //for determining nearest character
 
+
+int keyboardMinY = 335;
+int keyboardMaxY = 445;
+
+ArrayList<String> posWords = new ArrayList<String>();
+
 void gestureSetup() {
   int i = 0;
   while (i < keySet.length) {
@@ -236,8 +230,23 @@ void gestureUI() {
     text(keySet[i]+"", xPos.get(i), yPos.get(i)+5);
   }
 
+  
+  float boxX = width/2-sizeOfInputArea/4;
+  float boxW = sizeOfInputArea/2;
+  float boxY = (height/2+sizeOfInputArea/2+keyboardMaxY)/2;
+  float boxH = (height/2+sizeOfInputArea/2-keyboardMaxY);
+  fill(255);
+  rect(boxX, boxY, boxW, boxH);
+  fill(0, 102, 153);
+  text("SPACE", boxX, boxY);
+  
+  boxX += sizeOfInputArea/2;
+  fill(255);
+  rect(boxX, boxY, boxW, boxH);
+  fill(0, 102, 153);
+  text("BACKSPACE", boxX, boxY);
+  
   rectMode(CORNER);
-
   //float circleRadius = 5;
   //for (int i = 0; i < keySet.length; i++) {
   //  fill(0);
@@ -251,14 +260,42 @@ void gestureUI() {
 }
 
 void gestureClicked() {
-  if (entering == false)
+  if (mouseY >= keyboardMinY && mouseY <= keyboardMaxY) {
     entering = true;
+    oldX = new ArrayList<Integer>();
+    oldY = new ArrayList<Integer>();
+    distDiff = new ArrayList<Float>();
+    oldX.add(mouseX);
+    oldY.add(mouseY);
+  }
+  else if (mouseY > keyboardMaxY){
+    if (mouseX < width/2) {
+      currentTyped += " ";
+    }
+    else {
+      if (currentTyped.length() > 0)
+        currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+    }    
+  }
 }
 
 void gestureMouseDragged() {
-  distDiff.add(dist(oldX.get(oldX.size()-1), oldY.get(oldX.size()-1), mouseX, mouseY));
-  oldX.add(mouseX);
-  oldY.add(mouseY);
+  if (oldX.size() > 0) {
+    distDiff.add(dist(oldX.get(oldX.size()-1), oldY.get(oldX.size()-1), mouseX, mouseY));
+    oldX.add(mouseX);
+    oldY.add(mouseY);    
+  }
+}
+
+void gestureReleased() {
+  if (entering == true) {
+    entering = false;
+    System.out.println(distDiff);
+    System.out.println(extractPosChars(distDiff));
+    ArrayList<String> words = getFreqWords(extractPosChars(distDiff));
+    System.out.println(words.subList(0,min(10,words.size())));
+    posWords = new ArrayList<String>(words);
+  }
 }
 
 boolean[] getIgnore(ArrayList<Float> distDiff) {
