@@ -169,9 +169,12 @@ void mousePressedUI() {
   println(curr_word);
   // NEXT WORD GUESS
   List<WordFreq> words = autoComplete(curr_word);
-  word_guesses[0] = words.get(0).word;
-  word_guesses[1] = words.get(1).word;
-  word_guesses[2] = words.get(2).word;
+  if (words.size() >= 1)
+    word_guesses[0] = words.get(0).word;
+  if (words.size() >= 2)
+    word_guesses[1] = words.get(1).word;
+  if (words.size() >= 3)
+    word_guesses[2] = words.get(2).word;
   
 }
 
