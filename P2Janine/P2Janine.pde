@@ -34,7 +34,7 @@ String buttonText;
 char next_letter_guess;
 
 // ===== NEXT WORD CODE =====
-String[] word_guesses = {"", "", ""};
+String[] word_guesses = {" ", " ", " "};
 float topbuff = sizeOfInputArea/8;
 String curr_word;
 
@@ -374,14 +374,14 @@ void mouseReleased()
         }
       }
     }
-    
-    if (didMouseClick(width/2 - (1.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) {
+   
+    if (didMouseClick(width/2 - (1.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()-1) + word_guesses[0] + " ";
-    } else if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) {
+    } else if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()-1) + word_guesses[1] + " ";
-    } else if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff)) {
+    } else if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()-1) + word_guesses[2] + " ";
-    } else if (didMouseClick(width/2+(3*sizeOfInputArea)/10+11, height/2+sizeOfInputArea/5, sizeOfInputArea/8, sizeOfInputArea/12)) {
+    } else if (didMouseClick(width/2+(3*sizeOfInputArea)/10+11, height/2+sizeOfInputArea/5, sizeOfInputArea/8, sizeOfInputArea/12) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
     }
     
