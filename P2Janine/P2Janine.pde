@@ -66,7 +66,7 @@ char currentLetter = 'a';
 //You can modify anything in here. This is just a basic implementation.
 void setup()
 {
-  watch = loadImage("watchhand3smaller.png");
+  watch = loadImage("watchface.png");
   phrases = loadStrings("phrases2.txt"); //load the phrase set into memory
   Collections.shuffle(Arrays.asList(phrases), new Random()); //randomize the order of the phrases with no seed
   //Collections.shuffle(Arrays.asList(phrases), new Random(100)); //randomize the order of the phrases with seed 100; same order every time, useful for testing
@@ -87,8 +87,8 @@ void draw()
     
     background(255); //clear background
     drawWatch(); //draw watch background
-    fill(100);
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
+    //fill(100);
+    //rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
     if (finishTime!=0)
     {
@@ -105,38 +105,37 @@ void draw()
   
     if (startTime!=0)
     {
-      noStroke();
+      /*noStroke();
       rectMode(CENTER);
       fill(255);
       stroke(10);
       rect(textLocation, 90, 600, 150);
       noStroke();
-      rectMode(CORNER);
+      rectMode(CORNER);*/
       //feel free to change the size and position of the target/entered phrases and next button 
       textAlign(CENTER);
       fill(128);
       text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, textLocation, 50); //draw the trial count
-      fill(128);
       text("Target:   " + currentPhrase, textLocation, 100); //draw the target string
       text("Entered:  " + currentTyped +"|", textLocation, 140); //draw what the user has entered thus far 
   
-      //draw very basic next button
+      /*//draw very basic next button
       fill(0, 200, 0);
       rect(600, 600, 200, 200); //draw next button
       fill(255);
       text("NEXT > ", 650, 650); //draw next label
+      */
       
       if (version % 3 == 0) {
-        rect(width/2 - (1.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
-        rect(width/2 - (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
-        rect(width/2 + (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
+        //rect(width/2 - (1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
+        //rect(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
+        //rect(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff);
         fill(0, 102, 153);
-        text(word_guesses[0], width/2- sizeOfInputArea/3, 20+height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
-        text(word_guesses[1], width/2, 20+height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
-        text(word_guesses[2], width/2 + sizeOfInputArea/3, 20+height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+        text(word_guesses[0], width/2- sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+        text(word_guesses[1], width/2, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
+        text(word_guesses[2], width/2 + sizeOfInputArea/3, height/2-sizeOfInputArea/2+sizeOfInputArea/5/2);
  
-        
-        //Top Row
+        /*//Top Row
         fill(255);
         rect(width/2-sizeOfInputArea/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
         rect(width/2-(2*sizeOfInputArea)/10+3, height/2-sizeOfInputArea/5+20, sizeOfInputArea/13, sizeOfInputArea/13); 
@@ -193,8 +192,12 @@ void draw()
         rect(width/2+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
         rect(width/2+(sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13); 
         rect(width/2+(2*sizeOfInputArea)/10+6, height/2+sizeOfInputArea/5, sizeOfInputArea/13, sizeOfInputArea/13);
-        fill(255, 50, 0);
-        rect(width/2+(3*sizeOfInputArea)/10+11, height/2+sizeOfInputArea/5, sizeOfInputArea/8, sizeOfInputArea/12); 
+        fill(200,50,0);
+        rect(width/2 - sizeOfInputArea/2+30, height/2+sizeOfInputArea/5+35, sizeOfInputArea-60, sizeOfInputArea/8-10); 
+        fill(200);
+        rect(width/2 - sizeOfInputArea/2+30, height/2-sizeOfInputArea/5-30, sizeOfInputArea-60, sizeOfInputArea/8-10); 
+        fill(0);
+        text("backspace",width/2, height/2+sizeOfInputArea/5+55);
         
         fill(0, 102, 153);
         text("v",width/2-sizeOfInputArea/10+16, height/2+sizeOfInputArea/5+16); 
@@ -203,7 +206,8 @@ void draw()
         text("z",width/2-(4*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);  
         text("b",width/2+16, height/2+sizeOfInputArea/5+16); 
         text("n",width/2+(sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
-        text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16); 
+        text("m",width/2+(2*sizeOfInputArea)/10+16, height/2+sizeOfInputArea/5+16);
+        */
       }
     }
     
@@ -244,54 +248,6 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
   return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
 }
 
-String closestButton() {
-  String ret="";
-  float cloose;
-  int j=0;
-  if (mouseY > height/2-sizeOfInputArea/5+8 && mouseY < height/2-2) {
-    //System.out.println("Top");
-    cloose = abs(mouseX-top[0]);
-    for(int i = 1; i < 10; i++) {
-      if (cloose > abs(mouseX-top[i])) {
-        cloose = abs(mouseX-top[i]);
-        j=i;
-      }
-    }
-    ret = alphabet[j];
-  }
-  else if (mouseY > height/2-2 && mouseY < height/2+43.407) {
-    //System.out.println("Middle");
-    cloose = abs(mouseX-top[0]);
-    for(int i = 1; i < 9; i++) {
-      if (cloose > abs(mouseX-middle[i])) {
-        cloose = abs(mouseX-middle[i]);
-        j=i;
-      }
-    }
-    ret = alphabet[10+j];
-  }
-  else if (mouseY > height/2+43.407 && mouseY < height/2+sizeOfInputArea/5+sizeOfInputArea/13+12) {
-    //System.out.println("Bottom");
-    cloose = abs(mouseX-top[0]);
-    for(int i = 1; i < 7; i++) {
-      if (cloose > abs(mouseX-bottom[i])) {
-        cloose = abs(mouseX-bottom[i]);
-        j=i;
-      }
-    }
-    if (j == 8) {
-      currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
-      return "";
-    }
-    ret = alphabet[19+j];
-  }
-  else if (mouseY > 20+height/2-sizeOfInputArea/2 && mouseY < 20+height/2-sizeOfInputArea/2+topbuff) {
-  }
-  else  {
-    ret = " ";
-  }
-  return ret; 
-}
 
 void closestButtons() {
   //sizeofInputArea/5 = 55.4
@@ -326,9 +282,6 @@ void closestButtons() {
       }
     }
   }
-  else {
-    currentTyped += " ";
-  }
 }
 
 //my terrible implementation you can entirely replace
@@ -343,9 +296,6 @@ void mousePressed()
       //System.out.println(mouseX);
       if (version%5 == 0) {
         closestButtons();
-      }
-      else {
-        currentTyped+=closestButton();
       }
     }
   }
@@ -374,15 +324,16 @@ void mouseReleased()
         }
       }
     }
-   
-    if (didMouseClick(width/2 - (1.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
+    if (didMouseClick(width/2 - (1.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()-1) + word_guesses[0] + " ";
-    } else if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
+    } else if (didMouseClick(width/2 - (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()-1) + word_guesses[1] + " ";
-    } else if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), 20+height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
+    } else if (didMouseClick(width/2 + (0.5 * sizeOfInputArea/3), height/2-sizeOfInputArea/2, sizeOfInputArea/3, topbuff) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - curr_word.length()-1) + word_guesses[2] + " ";
-    } else if (didMouseClick(width/2+(3*sizeOfInputArea)/10+11, height/2+sizeOfInputArea/5, sizeOfInputArea/8, sizeOfInputArea/12) && currentTyped.length()>0) {
+    } else if (didMouseClick(width/2 - sizeOfInputArea/2+30, height/2+sizeOfInputArea/5+35, sizeOfInputArea-60, sizeOfInputArea/8-10) && currentTyped.length()>0) {
       currentTyped = currentTyped.substring(0, currentTyped.length() - 1);
+    } else if (didMouseClick(width/2 - sizeOfInputArea/2+30, height/2-sizeOfInputArea/5-30, sizeOfInputArea-60, sizeOfInputArea/8-10)){
+      currentTyped += " ";
     }
     
     // GUESS THE NEXT LETTER
